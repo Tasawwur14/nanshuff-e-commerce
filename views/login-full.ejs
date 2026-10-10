@@ -131,8 +131,8 @@
                             </div>
                             <input type="email" id="forgot-email" placeholder="Email Address" class="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent pl-10 text-text-primary placeholder-gray-500 transition">
                         </div>
-                        <div id="forgot-message" class="text-center text-sm font-medium mb-4 h-5"></div>
-                        <button type="submit" class="w-full py-3 px-6 rounded-lg text-white font-bold bg-gradient-to-r from-[#8C6A5D] to-[#73564B] hover:from-[#73564B] hover:to-[#8C6A5D] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#8C6A5D] transition-all duration-300 transform hover:scale-105 mt-6">Send Reset Link</button>
+                        <div id="forgot-message" class="text-center text-sm font-medium mb-4 min-h-[1.25rem]"></div>
+                        <button type="submit" id="forgot-submit-btn" class="w-full py-3 px-6 rounded-lg text-white font-bold bg-gradient-to-r from-[#8C6A5D] to-[#73564B] hover:from-[#73564B] hover:to-[#8C6A5D] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#8C6A5D] transition-all duration-300 transform hover:scale-105 mt-6">Send Reset Link</button>
                     </form>
                     <div class="mt-6 text-center">
                         <p class="text-sm text-text-secondary">
@@ -222,6 +222,102 @@
                 }
             } catch (err) {
                 showMessage('Server error. Please try again later.', true);
+            }
+        });
+    })();
+
+    // Inline forgot password form submit handler (fallback)
+    (function(){
+        const forgotForm = document.getElementById('forgot-form');
+        if (!forgotForm || forgotForm.dataset.inlineHandlerAttached) return;
+        forgotForm.dataset.inlineHandlerAttached = '1';
+
+        const showMessage = (content, isError) => {
+            const el = document.getElementById('forgot-message');
+            if (!el) return;
+            el.innerHTML = content;
+            el.className = `text-center text-sm font-medium mb-4 min-h-[1.25rem] ${isError ? 'text-red-500' : 'text-green-600'}`;
+        };
+
+        forgotForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const emailInput = document.getElementById('forgot-email');
+            const email = emailInput?.value?.trim() || '';
+            const submitBtn = forgotForm.querySelector('button[type="submit"]');
+
+            if (!email) {
+                showMessage('Please enter your email address', true);
+                return;
+            }
+
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                showMessage('Please enter a valid email address', true);
+                return;
+            }
+
+            const origText = submitBtn ? submitBtn.innerText : 'Send Reset Link';
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerText = 'Sending...';
+            }
+
+            try {
+                const res = await fetch('/api/auth/forgot-password', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email })
+                });
+                const data = await res.json().catch(() => ({}));
+                if (res.ok) {
+                    const el = document.getElementById('forgot-message');
+                    if (data.emailSent) {
+                        if (el) {
+                            el.innerHTML = `
+                                <div class="p-3 bg-green-50 border border-green-300 rounded-lg text-green-800 text-sm text-left">
+                                    <p class="font-semibold text-green-900">${data.message || 'Password reset link sent to your email!'}</p>
+                                    ${data.resetUrl ? `<p class="text-xs text-gray-600 mt-2">Dev quick link: <a href="${data.resetUrl}" class="underline font-bold text-accent-brown">Open Reset Page</a></p>` : ''}
+                                </div>
+                            `;
+                            el.className = 'text-center text-sm font-medium mb-4 min-h-[1.25rem]';
+                        }
+                    } else if (data.resetUrl) {
+                        if (el) {
+                            el.innerHTML = `
+                                <div class="mt-2 p-3 bg-amber-50 border border-amber-300 rounded-lg text-left">
+                                    <p class="text-xs text-amber-900 font-semibold mb-2">${data.message || 'Your reset link is ready:'}</p>
+                                    <a href="${data.resetUrl}" class="block text-center py-2 px-4 bg-gradient-to-r from-[#8C6A5D] to-[#73564B] text-white font-bold rounded-lg text-sm shadow hover:opacity-95 transition">
+                                        👉 Click Here to Reset Password
+                                    </a>
+                                    <p class="text-[11px] text-gray-500 text-center mt-2">Redirecting automatically in <span id="full-countdown">3</span>s...</p>
+                                </div>
+                            `;
+                            el.className = 'text-center text-sm font-medium mb-4 min-h-[1.25rem]';
+                            let count = 3;
+                            const timer = setInterval(() => {
+                                count--;
+                                const cd = document.getElementById('full-countdown');
+                                if (cd) cd.textContent = count;
+                                if (count <= 0) {
+                                    clearInterval(timer);
+                                    window.location.href = data.resetUrl;
+                                }
+                            }, 1000);
+                        }
+                    } else {
+                        showMessage(data.message || 'Password reset link sent to your email!', false);
+                    }
+                    if (emailInput) emailInput.value = '';
+                } else {
+                    showMessage(data.message || 'Failed to send reset link', true);
+                }
+            } catch (err) {
+                showMessage('Server error. Please try again later.', true);
+            } finally {
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerText = origText;
+                }
             }
         });
     })();

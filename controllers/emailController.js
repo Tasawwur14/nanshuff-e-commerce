@@ -3,72 +3,102 @@ const sqlModels = require('../models/sql');
 const User = sqlModels.User;
 const nodemailer = require('nodemailer');
 
-// Create a nodemailer transporter (using a mock transporter for development)
-// In production, you would configure with actual email service credentials
+// Check if a real email service is configured with valid credentials
+const isEmailConfigured = () => {
+    if (process.env.BREVO_API_KEY && !process.env.BREVO_API_KEY.includes('your-key')) {
+        return true;
+    }
+    const user = process.env.EMAIL_USER;
+    const pass = process.env.EMAIL_PASS || process.env.EMAIL_PASSWORD;
+    if (!user || !pass) return false;
+    if (user.includes('yourdomain.com') || pass.includes('your-email-password')) return false;
+    return true;
+};
+
+// Create a nodemailer transporter (fallback SMTP transporter)
 const createTransporter = () => {
-    // Check if email environment variables are set
-    if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
-        // Production configuration
-        return nodemailer.createTransporter({
-            service: process.env.EMAIL_SERVICE || 'gmail', // Default to Gmail
+    const pass = process.env.EMAIL_PASS || process.env.EMAIL_PASSWORD;
+    if (isEmailConfigured()) {
+        if (process.env.EMAIL_HOST && !process.env.EMAIL_HOST.includes('yourdomain.com')) {
+            return nodemailer.createTransport({
+                host: process.env.EMAIL_HOST,
+                port: parseInt(process.env.EMAIL_PORT, 10) || 587,
+                secure: process.env.EMAIL_SECURE === 'true' || process.env.EMAIL_PORT === '465',
+                auth: {
+                    user: process.env.EMAIL_USER,
+                    pass: pass
+                }
+            });
+        }
+        return nodemailer.createTransport({
+            service: process.env.EMAIL_SERVICE || 'gmail',
             auth: {
                 user: process.env.EMAIL_USER,
-                pass: process.env.EMAIL_PASS
+                pass: pass
             }
         });
     } else {
-        // For development or if not configured, use a transporter
-        // that logs emails and optionally sends to a test email
+        // Development mock transporter when no service configured
         return {
             sendMail: async (mailOptions) => {
                 console.log('==================================================');
-                console.log('EMAIL DEBUG INFO (Development Mode)');
+                console.log('EMAIL DEBUG INFO (Development Mock Mode)');
                 console.log('To:', mailOptions.to);
                 console.log('Subject:', mailOptions.subject);
                 console.log('==================================================');
                 console.log('HTML Content:');
                 console.log(mailOptions.html || mailOptions.text);
                 console.log('==================================================');
-                
-                // If test email is configured, send to test email instead of actual recipient
-                if (process.env.TEST_EMAIL) {
-                    console.log('Sending development email to test address:', process.env.TEST_EMAIL);
-                    mailOptions.to = process.env.TEST_EMAIL;
-                    
-                    // Create a simple transporter for development that uses default SMTP
-                    const devTransporter = nodemailer.createTransporter({
-                        host: process.env.SMTP_HOST || 'smtp.gmail.com',
-                        port: process.env.SMTP_PORT || 587,
-                        secure: process.env.SMTP_SECURE === 'true' || false,
-                        auth: {
-                            user: process.env.EMAIL_USER,
-                            pass: process.env.EMAIL_PASS
-                        }
-                    });
-                    
-                    try {
-                        const result = await devTransporter.sendMail(mailOptions);
-                        console.log('Test email sent successfully:', result.messageId);
-                        return result;
-                    } catch (error) {
-                        console.error('Error sending test email:', error);
-                        throw error;
-                    }
-                } else {
-                    console.log('No test email configured. To enable test emails, set TEST_EMAIL in your .env file');
-                    console.log('Set these environment variables to enable actual email sending:');
-                    console.log('- EMAIL_SERVICE (e.g., gmail)');
-                    console.log('- EMAIL_USER (your email address)');
-                    console.log('- EMAIL_PASS (your app password)');
-                    console.log('- TEST_EMAIL (optional, to send all emails to this address for testing)');
-                    console.log('==================================================');
-                    
-                    // Return a mock success response
-                    return { messageId: 'mock-message-id' };
-                }
+                return { messageId: 'mock-dev-message-id' };
             }
         };
     }
+};
+
+// Unified sendEmail function supporting Brevo REST API and Nodemailer
+const sendEmail = async ({ to, subject, html, text }) => {
+    // 1. Prioritize Brevo REST API if configured
+    if (process.env.BREVO_API_KEY && !process.env.BREVO_API_KEY.includes('your-key')) {
+        const senderEmail = process.env.BREVO_SENDER_EMAIL || process.env.EMAIL_FROM || 'tasawwarkhan14@gmail.com';
+        const senderName = process.env.BREVO_SENDER_NAME || 'Nanshhuf';
+        const toList = Array.isArray(to) ? to.map(e => typeof e === 'string' ? { email: e } : e) : [{ email: to }];
+
+        const response = await fetch('https://api.brevo.com/v3/smtp/email', {
+            method: 'POST',
+            headers: {
+                'accept': 'application/json',
+                'api-key': process.env.BREVO_API_KEY,
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify({
+                sender: { name: senderName, email: senderEmail },
+                to: toList,
+                subject: subject,
+                htmlContent: html,
+                textContent: text
+            })
+        });
+
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok) {
+            console.error('Brevo API delivery error:', data);
+            throw new Error(data.message || 'Brevo email delivery failed');
+        }
+
+        console.log(`✉️ [BREVO] Email successfully sent to ${Array.isArray(to) ? to.join(', ') : to}. MessageId: ${data.messageId}`);
+        return { success: true, messageId: data.messageId };
+    }
+
+    // 2. Fallback to standard Nodemailer transporter
+    const transporter = createTransporter();
+    const result = await transporter.sendMail({
+        from: process.env.EMAIL_FROM || process.env.EMAIL_USER || 'noreply@nanshhuf.com',
+        to,
+        subject,
+        html,
+        text
+    });
+    return { success: true, messageId: result.messageId };
 };
 
 // Send email campaign to all users
@@ -76,14 +106,12 @@ exports.sendEmailCampaign = async (req, res) => {
     try {
         const { subject, message } = req.body;
         
-        // Validate input
         if (!subject || !message) {
             return res.status(400).json({ 
                 message: 'Subject and message are required' 
             });
         }
         
-        // Get all users to send the email to
         const users = await User.findAll({ attributes: ['email', 'name'] });
         
         if (users.length === 0) {
@@ -92,23 +120,17 @@ exports.sendEmailCampaign = async (req, res) => {
             });
         }
         
-        const transporter = createTransporter();
         let successCount = 0;
         let errorCount = 0;
         
-        // Send email to each user
         for (const user of users) {
             try {
-                // Personalize the message for each user
                 const personalizedMessage = message.replace(/{name}/g, user.name || 'Customer');
-                
-                await transporter.sendMail({
-                    from: process.env.EMAIL_USER || 'noreply@yoursite.com',
+                await sendEmail({
                     to: user.email,
                     subject: subject,
                     html: personalizedMessage
                 });
-                
                 successCount++;
             } catch (err) {
                 console.error(`Error sending email to ${user.email}:`, err);
@@ -135,35 +157,45 @@ exports.sendEmailCampaign = async (req, res) => {
 // Send password reset email
 exports.sendPasswordResetEmail = async (user, resetToken) => {
     try {
-        const transporter = createTransporter();
-        
-        // Construct the reset link with the token
         const resetLink = `${process.env.BASE_URL || 'http://localhost:3000'}/reset-password/${resetToken}`;
         
-        const mailOptions = {
-            from: process.env.EMAIL_USER || 'noreply@nanshhuf.com',
-            to: user.email,
-            subject: 'Password Reset Request',
-            html: `
-                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-                    <h2 style="color: #8B4513;">Password Reset Request</h2>
-                    <p>Hello ${user.name || 'User'},</p>
-                    <p>You have requested to reset your password. Click the button below to set a new password:</p>
-                    <div style="text-align: center; margin: 30px 0;">
-                        <a href="${resetLink}" style="background-color: #8B4513; color: white; padding: 12px 25px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;">Reset Password</a>
-                    </div>
-                    <p>If the button doesn't work, copy and paste this link into your browser:</p>
-                    <p style="word-break: break-all;">${resetLink}</p>
-                    <p>This link will expire in 1 hour.</p>
-                    <p>If you didn't request a password reset, please ignore this email.</p>
-                    <hr style="margin: 20px 0; border: none; border-top: 1px solid #eee;">
-                    <p style="color: #666; font-size: 12px;">This is an automated message from Nanshhuf. Please do not reply to this email.</p>
+        const html = `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; border: 1px solid #eaeaea; border-radius: 10px; background-color: #ffffff;">
+                <div style="text-align: center; margin-bottom: 25px;">
+                    <h1 style="color: #8C6A5D; margin: 0; font-size: 32px; font-family: serif; letter-spacing: 2px;">NANSHHUF</h1>
+                    <p style="color: #73564B; font-size: 13px; margin-top: 4px; letter-spacing: 1px;">PREMIUM FROZEN LUXURY</p>
                 </div>
-            `
-        };
-        
-        await transporter.sendMail(mailOptions);
-        return { success: true };
+                
+                <div style="border-top: 1px solid #eee; padding-top: 20px;">
+                    <h2 style="color: #2C2C2C; margin-bottom: 12px; font-size: 20px;">Password Reset Request</h2>
+                    <p style="color: #555; line-height: 1.6;">Hello <strong>${user.name || 'Valued Customer'}</strong>,</p>
+                    <p style="color: #555; line-height: 1.6;">We received a request to reset the password for your Nanshhuf account. Click the button below to choose a new password:</p>
+                    
+                    <div style="text-align: center; margin: 32px 0;">
+                        <a href="${resetLink}" style="background-color: #8C6A5D; color: #ffffff; padding: 14px 32px; text-decoration: none; border-radius: 6px; font-weight: bold; font-size: 15px; display: inline-block; box-shadow: 0 4px 6px rgba(140,106,93,0.25);">Reset Password</a>
+                    </div>
+                    
+                    <p style="color: #666; font-size: 13px; line-height: 1.6;">If the button above does not work, copy and paste this link into your browser:</p>
+                    <p style="word-break: break-all; color: #8C6A5D; font-size: 12px; background: #FAF7F2; padding: 10px; border-radius: 5px;">
+                        <a href="${resetLink}" style="color: #8C6A5D; text-decoration: underline;">${resetLink}</a>
+                    </p>
+                    
+                    <p style="color: #888; font-size: 12px; margin-top: 20px;">⏰ This link will expire in <strong>1 hour</strong>.</p>
+                    <p style="color: #888; font-size: 12px;">If you did not request this password reset, please ignore this email or contact support if you have concerns.</p>
+                </div>
+                
+                <hr style="margin: 25px 0; border: none; border-top: 1px solid #eee;">
+                <p style="color: #999; font-size: 11px; text-align: center; margin: 0;">&copy; 2026 Nanshhuf. All rights reserved.</p>
+            </div>
+        `;
+
+        const result = await sendEmail({
+            to: user.email,
+            subject: 'Password Reset Request - Nanshhuf',
+            html
+        });
+
+        return { success: true, messageId: result.messageId };
     } catch (error) {
         console.error('Error sending password reset email:', error);
         return { success: false, error: error.message };
@@ -173,8 +205,6 @@ exports.sendPasswordResetEmail = async (user, resetToken) => {
 // Get email campaign statistics (placeholder)
 exports.getEmailCampaignStats = async (req, res) => {
     try {
-        // In a real implementation, you would track sent emails, open rates, etc.
-        // For now, return placeholder data
         res.status(200).json({
             totalCampaignsSent: 0,
             totalEmailsSent: 0,
@@ -189,3 +219,6 @@ exports.getEmailCampaignStats = async (req, res) => {
         });
     }
 };
+
+exports.sendEmail = sendEmail;
+exports.isEmailConfigured = isEmailConfigured;

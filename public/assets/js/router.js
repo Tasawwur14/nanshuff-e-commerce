@@ -1664,8 +1664,41 @@ async initializeProductDetailsPage() {
                 const data = await response.json();
                 
                 if (response.ok) {
-                    showMessage(forgotMessage, data.message, false); // Success message
-                    setTimeout(() => switchToPanel(loginPanel), 3000);
+                    if (data.emailSent) {
+                        let html = `
+                            <div class="p-3 bg-green-50 border border-green-300 rounded-lg text-green-800 text-sm text-left">
+                                <p class="font-semibold text-green-900">${data.message || 'Password reset link sent to your email!'}</p>
+                                ${data.resetUrl ? `<p class="text-xs text-gray-600 mt-2">Dev quick link: <a href="${data.resetUrl}" class="underline font-bold text-accent-brown">Open Reset Page</a></p>` : ''}
+                            </div>
+                        `;
+                        forgotMessage.innerHTML = html;
+                        forgotMessage.className = 'text-center text-sm font-medium mb-4 min-h-[1.25rem]';
+                    } else if (data.resetUrl) {
+                        forgotMessage.innerHTML = `
+                            <div class="mt-2 p-3 bg-amber-50 border border-amber-300 rounded-lg text-left">
+                                <p class="text-xs text-amber-900 font-semibold mb-2">${data.message || 'Your reset link is ready:'}</p>
+                                <a href="${data.resetUrl}" class="block text-center py-2 px-4 bg-gradient-to-r from-[#8C6A5D] to-[#73564B] text-white font-bold rounded-lg text-sm shadow hover:opacity-95 transition">
+                                    👉 Click Here to Reset Password
+                                </a>
+                                <p class="text-[11px] text-gray-500 text-center mt-2">Redirecting automatically in <span id="router-countdown">3</span>s...</p>
+                            </div>
+                        `;
+                        forgotMessage.className = 'text-center text-sm font-medium mb-4 min-h-[1.25rem]';
+                        let count = 3;
+                        const timer = setInterval(() => {
+                            count--;
+                            const el = document.getElementById('router-countdown');
+                            if (el) el.textContent = count;
+                            if (count <= 0) {
+                                clearInterval(timer);
+                                window.location.href = data.resetUrl;
+                            }
+                        }, 1000);
+                    } else {
+                        showMessage(forgotMessage, data.message || "Password reset link sent to your email!", false);
+                        setTimeout(() => switchToPanel(loginPanel), 3000);
+                    }
+                    if (emailInput) emailInput.value = '';
                 } else {
                     showMessage(forgotMessage, data.message || "Failed to send reset link", true);
                 }

@@ -409,16 +409,31 @@ exports.forgotPassword = async (req, res) => {
     
     // Email format validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
+    const cleanEmail = email.trim();
+    if (!emailRegex.test(cleanEmail)) {
         return res.status(400).json({ message: 'Invalid email format' });
     }
     
     try {
-        // Find user by email
-        const user = await User.findOne({ where: { email } });
+        const emailController = require('./emailController');
+        const hasEmailService = emailController.isEmailConfigured();
+
+        // Find user by email (case-insensitive)
+        const user = await User.findOne({ 
+            where: { 
+                [require('sequelize').Op.or]: [
+                    { email: cleanEmail },
+                    { email: cleanEmail.toLowerCase() }
+                ]
+            } 
+        });
         
         if (!user) {
-            // Return success message even if user doesn't exist to prevent email enumeration
+            console.log(`[PASSWORD RESET] Request received for unregistered email: ${cleanEmail}`);
+            if (!hasEmailService || process.env.NODE_ENV !== 'production') {
+                return res.status(404).json({ message: 'No registered user found with this email. Please check your email or sign up.' });
+            }
+            // In production with email service, prevent email enumeration
             return res.status(200).json({ message: 'If an account with this email exists, a password reset link has been sent.' });
         }
         
@@ -428,21 +443,42 @@ exports.forgotPassword = async (req, res) => {
         
         // Set token and expiration (1 hour from now)
         user.resetPasswordToken = resetToken;
-        user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+        user.resetPasswordExpires = new Date(Date.now() + 3600000); // 1 hour
         
         await user.save();
         
-        // Send password reset email
-        const emailController = require('./emailController');
-        const emailResult = await emailController.sendPasswordResetEmail(user, resetToken);
-        
-        if (emailResult.success) {
-            res.status(200).json({ message: 'If an account with this email exists, a password reset link has been sent.' });
-        } else {
-            console.error('Error sending password reset email:', emailResult.error);
-            // Still return success to prevent email enumeration, but log the error
-            res.status(200).json({ message: 'If an account with this email exists, a password reset link has been sent.' });
+        // Construct the reset link with the token
+        const resetLink = `${process.env.BASE_URL || 'http://localhost:3000'}/reset-password/${resetToken}`;
+        console.log('\n==================================================');
+        console.log('🔑 [PASSWORD RESET] Token generated for:', user.email);
+        console.log('🔗 Reset Link:', resetLink);
+        console.log('📬 Email Service Configured:', hasEmailService ? 'YES' : 'NO (Using direct reset link)');
+        console.log('==================================================\n');
+
+        if (hasEmailService) {
+            const emailResult = await emailController.sendPasswordResetEmail(user, resetToken);
+            if (emailResult && !emailResult.success) {
+                console.error('Error sending password reset email:', emailResult.error);
+                return res.status(500).json({ message: 'Failed to send reset email. Please contact support.' });
+            }
+            const responsePayload = {
+                success: true,
+                emailSent: true,
+                message: `A password reset link has been sent to ${user.email}. Please check your inbox and spam folder.`
+            };
+            if (process.env.NODE_ENV !== 'production') {
+                responsePayload.resetUrl = resetLink;
+            }
+            return res.status(200).json(responsePayload);
         }
+
+        // When no email service is linked yet, provide direct reset link so the user is never stuck
+        return res.status(200).json({
+            success: true,
+            emailSent: false,
+            message: 'No email service is linked yet. Your password reset link is ready:',
+            resetUrl: resetLink
+        });
     } catch (error) {
         console.error('Forgot password error:', error);
         res.status(500).json({ message: 'Server error' });
@@ -471,7 +507,7 @@ exports.resetPassword = async (req, res) => {
         const user = await User.findOne({ 
             where: { 
                 resetPasswordToken: token,
-                resetPasswordExpires: { [require('sequelize').Op.gt]: Date.now() }
+                resetPasswordExpires: { [require('sequelize').Op.gt]: new Date() }
             } 
         });
         
