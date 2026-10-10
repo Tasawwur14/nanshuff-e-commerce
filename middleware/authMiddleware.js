@@ -15,61 +15,78 @@ exports.isLoggedIn = async (req, res, next) => {
         token = req.cookies.token;
     }
 
-    if (token) {
-        try {
-            const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-            // Fetch user using appropriate model API depending on DB type
-            // Sequelize: findByPk and exclude password via attributes
-            const userRecord = await User.findByPk(decoded.id, { attributes: { exclude: ['password'] } });
-            req.user = userRecord || null;
-
-            if (!req.user) {
-                return res.status(401).json({ message: 'Not authorized, user not found' });
-            }
-            return next();
-        } catch (error) {
-            console.error('JWT Verification Error:', error && error.message ? error.message : error);
-            if (error && error.name === 'TokenExpiredError') {
-                return res.status(401).json({ message: 'TokenExpiredError: token has expired' });
-            }
-            return res.status(401).json({ message: 'InvalidTokenError: token verification failed' });
+    if (token && typeof token === 'string') {
+        token = token.trim();
+        if (token.startsWith('Bearer ')) {
+            token = token.slice(7).trim();
+        }
+        if (token.startsWith('"') && token.endsWith('"')) {
+            token = token.slice(1, -1);
         }
     }
 
-    // If we reach here, no token was provided
-    return res.status(401).json({ message: 'Not authorized, no token' });
-};
-
-exports.isAdminLoggedIn = async (req, res, next) => {
-    let token;
-    if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
-        token = req.headers.authorization.split(' ')[1];
-    } else if (req.cookies && req.cookies.token) {
-        token = req.cookies.token;
-    }
-
-    if (!token) {
+    if (!token || token === 'null' || token === 'undefined') {
         return res.status(401).json({ message: 'Not authorized, no token' });
     }
 
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-            // Check if the user has the admin role
-            if (decoded.role !== 'admin') {
-                res.status(401).json({ message: 'Not authorized, not an admin' });
-                return; // stop further execution
-            }
+        // Fetch user using appropriate model API depending on DB type
+        const userRecord = await User.findByPk(decoded.id, { attributes: { exclude: ['password'] } });
+        req.user = userRecord || null;
 
-            // Fetch the actual admin user from DB using appropriate API
-            // Sequelize: find admin by PK and exclude password
-            const admin = await Admin.findByPk(decoded.id, { attributes: { exclude: ['password'] } });
+        if (!req.user) {
+            return res.status(401).json({ message: 'Not authorized, user not found' });
+        }
+        return next();
+    } catch (error) {
+        console.error('JWT Verification Error:', error && error.message ? error.message : error);
+        if (error && error.name === 'TokenExpiredError') {
+            return res.status(401).json({ message: 'TokenExpiredError: token has expired' });
+        }
+        return res.status(401).json({ message: 'InvalidTokenError: token verification failed' });
+    }
+};
 
-            if (!admin) {
-                res.status(401).json({ message: 'Not authorized, admin not found' });
-                return; // stop further execution
-            }
+exports.isAdminLoggedIn = async (req, res, next) => {
+    let token;
+    if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+        token = req.headers.authorization.split(' ')[1];
+    } else if (req.cookies && req.cookies.adminToken) {
+        token = req.cookies.adminToken;
+    } else if (req.cookies && req.cookies.token) {
+        token = req.cookies.token;
+    }
+
+    if (token && typeof token === 'string') {
+        token = token.trim();
+        if (token.startsWith('Bearer ')) {
+            token = token.slice(7).trim();
+        }
+        if (token.startsWith('"') && token.endsWith('"')) {
+            token = token.slice(1, -1);
+        }
+    }
+
+    if (!token || token === 'null' || token === 'undefined') {
+        return res.status(401).json({ message: 'Not authorized, no token' });
+    }
+
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+        // Check if the user has the admin role
+        if (decoded.role !== 'admin') {
+            return res.status(401).json({ message: 'Not authorized, not an admin' });
+        }
+
+        // Fetch the actual admin user from DB using appropriate API
+        const admin = await Admin.findByPk(decoded.id, { attributes: { exclude: ['password'] } });
+
+        if (!admin) {
+            return res.status(401).json({ message: 'Not authorized, admin not found' });
+        }
 
         req.admin = admin; // Set the actual admin document
         return next();

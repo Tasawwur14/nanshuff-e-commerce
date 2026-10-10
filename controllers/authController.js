@@ -118,7 +118,8 @@ exports.loginUser = async (req, res) => {
                     httpOnly: true,
                     secure: process.env.NODE_ENV === 'production',
                     maxAge: longExpirySeconds * 1000,
-                    sameSite: 'lax'
+                    sameSite: 'lax',
+                    path: '/'
                 });
                 // Return success and token for backward compatibility
                 res.json({ token, user: req.session.user });
@@ -193,12 +194,20 @@ exports.loginAdmin = async (req, res) => {
                         message: 'Server error during login.' 
                     });
                 }
-                // Set cookie for 90 days
+                // Set cookie for 90 days with explicit root path
                 res.cookie('token', token, {
                     httpOnly: true,
                     secure: process.env.NODE_ENV === 'production',
                     maxAge: longExpirySeconds * 1000,
-                    sameSite: 'lax'
+                    sameSite: 'lax',
+                    path: '/'
+                });
+                res.cookie('adminToken', token, {
+                    httpOnly: true,
+                    secure: process.env.NODE_ENV === 'production',
+                    maxAge: longExpirySeconds * 1000,
+                    sameSite: 'lax',
+                    path: '/'
                 });
                 // Send token also in body for compatibility
                 res.status(200).json({ 

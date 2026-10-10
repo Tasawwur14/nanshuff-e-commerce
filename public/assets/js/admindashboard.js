@@ -25,44 +25,44 @@ document.addEventListener('DOMContentLoaded', () => {
     // =================================================================
     // --- GLOBAL STATE & SETUP ---
     // =================================================================
-    // We use cookie-based httpOnly token authentication. Ensure the server-set cookie is present
-    // by letting the browser send cookies with requests (credentials: 'include'). Do not use localStorage.
-    const getAuthHeaders = () => ({ 'Content-Type': 'application/json' });
+    // Support both Bearer Authorization header and httpOnly cookies
+    const getAuthHeaders = () => {
+        const token = localStorage.getItem('adminToken') || localStorage.getItem('token');
+        const headers = { 'Content-Type': 'application/json' };
+        if (token && token !== 'null' && token !== 'undefined') {
+            headers['Authorization'] = `Bearer ${token}`;
+        }
+        return headers;
+    };
     const fetchWithAuth = (url, opts = {}) => {
         return fetch(url, { credentials: 'include', headers: { ...(opts.headers || {}), ...getAuthHeaders() }, ...opts });
     };
 
     // Global fetch wrapper for admin UI
-    // - Ensures same-origin API requests include credentials (cookies)
-    // - Automatically redirects to /adminlogin when server returns 401 (expired/invalid token)
-    // This avoids leaving the admin UI visible with no data when the token has expired.
     (function installGlobalFetchWrapper() {
         if (!window || !window.fetch) return;
         const origFetch = window.fetch.bind(window);
         window.fetch = async function(input, init = {}) {
             try {
-                // Resolve URL string for checks
                 const urlStr = typeof input === 'string' ? input : (input && input.url) || '';
-
-                // If this is a same-origin API request, add credentials unless already provided
                 const isApiCall = urlStr.startsWith('/api/') || urlStr.startsWith('/api') || urlStr.startsWith(window.location.origin + '/api');
                 if (isApiCall) {
                     init = Object.assign({ credentials: 'include' }, init);
-                    // IMPORTANT: Only add Content-Type header if NOT using FormData
-                    // FormData should NOT have Content-Type header set - browser must handle it
+                    const authHeaders = getAuthHeaders();
                     if (!(init.body instanceof FormData)) {
-                        init.headers = Object.assign({}, init.headers || {}, getAuthHeaders());
+                        init.headers = Object.assign({}, init.headers || {}, authHeaders);
+                    } else if (authHeaders['Authorization']) {
+                        init.headers = Object.assign({}, init.headers || {}, { 'Authorization': authHeaders['Authorization'] });
                     }
                 }
 
                 const resp = await origFetch(input, init);
 
                 if (resp && resp.status === 401) {
-                    // Token expired or invalid. Redirect to admin login so user doesn't remain on broken UI.
-                    // Small timeout to let any pending tasks finish; then navigate.
+                    localStorage.removeItem('adminToken');
                     setTimeout(() => {
                         window.location.href = '/adminlogin';
-                    }, 100);
+                    }, 200);
                 }
 
                 return resp;
@@ -833,10 +833,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const response = await fetch('/api/auth/users', { headers: getAuthHeaders() });
             if (!response.ok) {
                 if (response.status === 401) {
-                    // Try to show the server-provided message for easier debugging
-                    let errMsg = 'Session expired. Please log in again.';
-                    try { const errData = await response.json(); if (errData && errData.message) errMsg = errData.message; } catch (e) {}
-                    alert(errMsg);
+                    localStorage.removeItem('adminToken');
+                    window.location.href = '/adminlogin';
                     return;
                 }
                 throw new Error('Could not fetch customers.');
@@ -884,9 +882,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const response = await fetch('/api/coupons', { headers: getAuthHeaders() });
             if (!response.ok) {
                 if (response.status === 401) {
-                    let errMsg = 'Session expired. Please log in again.';
-                    try { const errData = await response.json(); if (errData && errData.message) errMsg = errData.message; } catch (e) {}
-                    alert(errMsg);
+                    localStorage.removeItem('adminToken');
+                    window.location.href = '/adminlogin';
                     return;
                 }
                 throw new Error('Could not fetch discount codes.');

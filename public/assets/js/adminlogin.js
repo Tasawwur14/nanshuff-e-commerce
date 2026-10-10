@@ -32,6 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (data.token) {
                     localStorage.setItem('adminToken', data.token);
+                    document.cookie = `adminToken=${data.token}; path=/; max-age=7776000; SameSite=Lax`;
                     window.location.href = '/admindashboard';
                 } else {
                     throw new Error('No token received');
