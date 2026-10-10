@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title || 'Nanshhuf - Premium Frozen Food Solutions' %></title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.js" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/5.4.4/photoswipe.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/5.4.4/photoswipe-lightbox.esm.min.js" type="module"></script>
+
+    <link rel="stylesheet" href="/assets/css/index.css">
+</head>
+<body class="bg-bg-light text-text-primary">
+
+    <header id="main-header" class="bg-white/90 backdrop-blur-lg border-b border-gray-200/30 fixed top-0 z-50 w-full transition-all duration-300">
+        <div class="container mx-auto px-4 lg:px-6">
+            <div id="header-top-bar" class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-4">
+                    <button id="mobile-menu-button" class="lg:hidden text-text-primary">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
+                    <a href="/" class="flex-shrink-0" data-no-spa>
+                        <img src="/images/brand/Eagle%20logo.png" alt="Nanshhuf" class="logo-image h-8 lg:h-10">
+                    </a>
+                    <div class="hidden lg:block">
+                        <form id="search-form" class="relative group">
+                            <input id="search-input" type="search" placeholder="Search..." class="w-64 bg-gray-100 py-2 pl-10 pr-4 rounded-full border-2 border-transparent group-hover:border-accent-brown focus:border-accent-brown focus:outline-none transition-all duration-300">
+                            <button type="submit" class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 cursor-pointer">
+                                <i data-lucide="search" class="w-5 h-5"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                
+                <div class="flex items-center justify-end space-x-2 md:space-x-4">
+                    <div id="header-icons-group" class="flex items-center space-x-2 md:space-x-4">
+                        <button id="mobile-search-button" class="lg:hidden text-text-primary hover:text-accent-brown transition-colors">
+                            <i data-lucide="search" class="w-6 h-6"></i>
+                        </button>
+                        <% if (typeof user !== 'undefined' && user) { %>
+                        <div class="relative">
+                            <a href="#" id="mobile-account-icon" class="lg:hidden text-text-primary hover:text-accent-brown transition-colors">
+                                <i data-lucide="user" class="w-6 h-6"></i>
+                            </a>
+                            <a href="#" id="desktop-account-icon" class="hidden lg:flex items-center space-x-2 text-text-primary hover:text-accent-brown transition-colors cursor-pointer relative">
+                                <i data-lucide="user" class="w-5 h-5"></i>
+                                <span class="text-sm font-semibold">ACCOUNT</span>
+                            </a>
+                            <div id="account-dropdown" class="hidden absolute top-full right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
+                                <a href="/profile" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">My Profile</a>
+                                <a href="/myorders" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">My Orders</a>
+                                <a href="/wishlist" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Wishlist</a>
+                                <a href="#" id="logout-btn" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Logout</a>
+                            </div>
+                        </div>
+                        <% } else { %>
+                        <a href="/login" id="mobile-account-icon" class="lg:hidden text-text-primary hover:text-accent-brown transition-colors">
+                            <i data-lucide="user" class="w-6 h-6"></i>
+                        </a>
+                        <a href="/login" id="desktop-account-icon" class="hidden lg:flex items-center space-x-2 text-text-primary hover:text-accent-brown transition-colors cursor-pointer">
+                            <i data-lucide="user" class="w-5 h-5"></i>
+                            <span class="text-sm font-semibold">ACCOUNT</span>
+                        </a>
+                        <% } %>
+                        <a href="/cart" id="cart-icon" class="relative flex items-center space-x-2 text-text-primary hover:text-accent-brown transition-colors" data-no-spa>
+                            <i data-lucide="shopping-cart" class="w-6 h-6 lg:w-5 lg:h-5"></i>
+                            <span class="hidden lg:inline text-sm font-semibold">CART</span>
+                            <span id="cart-badge" class="absolute -top-1 -left-2 bg-red-600 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center hidden">0</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <nav class="hidden lg:flex justify-center items-center border-t border-gray-200/30 py-3">
+                <div class="flex justify-center items-center space-x-8 text-sm font-semibold tracking-wider text-text-primary">
+                    <a href="/" class="hover:text-accent-brown transition-all duration-300 transform hover:-translate-y-0.5">HOME</a>
+                    <div class="relative group">
+                        <button class="py-3 flex items-center hover:text-accent-brown transition-colors duration-300">
+                            <span>PRODUCT CATEGORIES</span>
+                            <i data-lucide="chevron-down" class="w-4 h-4 ml-1 transition-transform duration-300 group-hover:rotate-180"></i>
+                        </button>
+                        <div class="dropdown-menu absolute top-full left-0 mt-1 min-w-full 
+                                    bg-white/90 backdrop-blur-lg shadow-xl rounded-md
+                                    opacity-0 invisible group-hover:opacity-100 group-hover:visible 
+                                    transition-all duration-300">
+                            <div class="py-2">
+                                <a href="/products?category=French%20Fries" class="block px-4 py-2 text-sm text-text-secondary hover:bg-gray-100 hover:text-accent-brown">French Fries</a>
+                                <a href="/products?category=Burger%20Patties" class="block px-4 py-2 text-sm text-text-secondary hover:bg-gray-100 hover:text-accent-brown">Burger Patties</a>
+                                <a href="/products?category=Ready%20To%20Eat" class="block px-4 py-2 text-sm text-text-secondary hover:bg-gray-100 hover:text-accent-brown">Ready To Eat</a>
+                                <a href="/products?category=Curries%20%7C%20Marinations%20%7C%20Sauces" class="block px-4 py-2 text-sm text-text-secondary hover:bg-gray-100 hover:text-accent-brown">Curries | Marinations | Sauces</a>
+                                <a href="/products?category=Creamy%20%26%20Dry%20Cakes" class="block px-4 py-2 text-sm text-text-secondary hover:bg-gray-100 hover:text-accent-brown">Creamy & Dry Cakes</a>
+                                <a href="/products?category=Breads%20%26%20Pizza%20Base" class="block px-4 py-2 text-sm text-text-secondary hover:bg-gray-100 hover:text-accent-brown">Breads & Pizza Base</a>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="/about" class="hover:text-accent-brown transition-all duration-300 transform hover:-translate-y-0.5">ABOUT US</a>
+                    <a href="/whyfrozen" class="hover:text-accent-brown transition-all duration-300 transform hover:-translate-y-0.5">WHY BUY FROZEN FOOD</a>
+                    <a href="/myths" class="hover:text-accent-brown transition-all duration-300 transform hover:-translate-y-0.5">FROZEN FOOD MYTHS</a>
+                    <a href="#" class="hover:text-accent-brown transition-all duration-300 transform hover:-translate-y-0.5">E-CATALOG</a>
+                    <a href="/contact" class="hover:text-accent-brown transition-all duration-300 transform hover:-translate-y-0.5">CONTACT US</a>
+                    <a href="#" class="hover:text-accent-brown transition-all duration-300 transform hover:-translate-y-0.5">BLOGS</a>
+                </div>
+            </nav>
+        </div>
+
+        <div id="mobile-search-wrapper" class="absolute top-0 left-0 w-full h-full bg-white/90 backdrop-blur-lg flex items-center px-4 transition-all duration-300 -translate-y-full lg:hidden">
+            <form id="mobile-search-form" class="relative w-full">
+                <input id="mobile-search-input" type="search" placeholder="Search..." class="w-full bg-gray-100 py-2 pl-10 pr-4 rounded-full border-2 border-transparent focus:border-accent-brown focus:outline-none">
+                <button type="submit" class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 cursor-pointer">
+                    <i data-lucide="search" class="w-5 h-5"></i>
+                </button>
+            </form>
+            <button id="close-search-button" class="text-text-primary ml-2 flex-shrink-0">
+                <i data-lucide="x" class="w-7 h-7"></i>
+            </button>
+        </div>
+        
+        <div id="mobile-menu" class="hidden lg:hidden bg-white/90 backdrop-blur-lg p-4 shadow-lg border-t border-gray-200/30">
+            <a href="/" class="block py-2 hover:text-accent-brown transition-colors">HOME</a>
+            <button id="mobile-dropdown-button" class="w-full text-left py-2 flex justify-between items-center hover:text-accent-brown transition-colors">
+                PRODUCT CATEGORIES <span class="mobile-dropdown-icon-container"><i data-lucide="chevron-down" class="w-4 h-4"></i></span>
+            </button>
+            <div id="mobile-dropdown-menu" class="hidden pl-4">
+                <a href="/products?category=French%20Fries" class="block py-2 text-sm text-text-secondary hover:text-accent-brown">French Fries</a>
+                <a href="/products?category=Burger%20Patties" class="block py-2 text-sm text-text-secondary hover:text-accent-brown">Burger Patties</a>
+                <a href="/products?category=Ready%20To%20Eat" class="block py-2 text-sm text-text-secondary hover:text-accent-brown">Ready To Eat</a>
+                <a href="/products?category=Curries%20%7C%20Marinations%20%7C%20Sauces" class="block py-2 text-sm text-text-secondary hover:text-accent-brown">Curries | Marinations | Sauces</a>
+                <a href="/products?category=Creamy%20%26%20Dry%20Cakes" class="block py-2 text-sm text-text-secondary hover:text-accent-brown">Creamy & Dry Cakes</a>
+                <a href="/products?category=Breads%20%26%20Pizza%20Base" class="block py-2 text-sm text-text-secondary hover:text-accent-brown">Breads & Pizza Base</a>
+            </div>
+            <a href="/about" class="block py-2 hover:text-accent-brown transition-colors">ABOUT US</a>
+            <a href="/whyfrozen" class="block py-2 hover:text-accent-brown transition-colors">WHY BUY FROZEN FOOD</a>
+            <a href="/myths" class="block py-2 hover:text-accent-brown transition-colors">FROZEN FOOD MYTHS</a>
+            <a href="#" class="block py-2 hover:text-accent-brown transition-colors">E-CATALOG</a>
+            <a href="/contact" class="block py-2 hover:text-accent-brown transition-colors">CONTACT US</a>
+            <a href="#" class="block py-2 hover:text-accent-brown transition-colors">BLOGS</a>
+        </div>
+    </header>
+
+    <script>
+        // Initialize Lucide icons immediately
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+        
+        // DEPRECATED: Mobile menu listeners are now handled by SPARouter.initializeMobileHeader()
+        // These listeners from the header template are no longer needed
+        // The router will attach fresh listeners on page load and after every navigation
+    </script>
+

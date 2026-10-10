@@ -1,0 +1,481 @@
+/* Minimal Tailwind CSS subset for Nanshhuf project */
+.container {
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: 1rem;
+  padding-left: 1rem;
+}
+@media (min-width: 640px) {
+  .container {
+    max-width: 640px;
+  }
+}
+@media (min-width: 768px) {
+  .container {
+    max-width: 768px;
+  }
+}
+@media (min-width: 1024px) {
+  .container {
+    max-width: 1024px;
+  }
+}
+@media (min-width: 1280px) {
+  .container {
+    max-width: 1280px;
+  }
+}
+
+/* Flexbox utilities */
+.flex {
+  display: flex;
+}
+.flex-row {
+  flex-direction: row;
+}
+.flex-col {
+  flex-direction: column;
+}
+.flex-wrap {
+  flex-wrap: wrap;
+}
+.items-center {
+  align-items: center;
+}
+.justify-center {
+  justify-content: center;
+}
+.justify-between {
+  justify-content: space-between;
+}
+.flex-1 {
+  flex: 1 1 0%;
+}
+.flex-grow {
+  flex-grow: 1;
+}
+.flex-shrink {
+  flex-shrink: 0;
+}
+
+/* Spacing utilities */
+.p-4 {
+  padding: 1rem;
+}
+.p-8 {
+  padding: 2rem;
+}
+.px-4 {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+.py-2 {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+.py-4 {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+.py-12 {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+.px-6 {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+.pl-4 {
+  padding-left: 1rem;
+}
+.pr-4 {
+  padding-right: 1rem;
+}
+.pt-4 {
+  padding-top: 1rem;
+}
+.pb-4 {
+  padding-bottom: 1rem;
+}
+.m-4 {
+  margin: 1rem;
+}
+.m-8 {
+  margin: 2rem;
+}
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+.my-4 {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+.mt-2 {
+  margin-top: 0.5rem;
+}
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
+.mb-4 {
+  margin-bottom: 1rem;
+}
+.mb-6 {
+  margin-bottom: 1.5rem;
+}
+.mb-8 {
+  margin-bottom: 2rem;
+}
+.ml-4 {
+  margin-left: 1rem;
+}
+
+/* Width and height utilities */
+.w-full {
+  width: 100%;
+}
+.w-6 {
+  width: 1.5rem;
+}
+.w-10 {
+  width: 2.5rem;
+}
+.w-48 {
+  width: 12rem;
+}
+.h-6 {
+  height: 1.5rem;
+}
+.h-10 {
+  height: 2.5rem;
+}
+.h-full {
+  height: 100%;
+}
+.h-64 {
+  height: 16rem;
+}
+.min-h-screen {
+  min-height: 100vh;
+}
+
+/* Text utilities */
+.text-center {
+  text-align: center;
+}
+.text-sm {
+  font-size: 0.875rem;
+}
+.text-lg {
+  font-size: 1.125rem;
+}
+.text-xl {
+  font-size: 1.25rem;
+}
+.text-2xl {
+  font-size: 1.5rem;
+}
+.text-3xl {
+  font-size: 1.875rem;
+}
+.text-4xl {
+  font-size: 2.25rem;
+}
+.font-bold {
+  font-weight: 700;
+}
+.font-semibold {
+  font-weight: 600;
+}
+
+/* Background utilities */
+.bg-white {
+  background-color: #fff;
+}
+.bg-gray-100 {
+  background-color: #f3f4f6;
+}
+.bg-bg-light {
+  background-color: #F5F5F5;
+}
+
+/* Text colors */
+.text-text-primary {
+  color: #2D2D2D;
+}
+.text-text-secondary {
+  color: #71717A;
+}
+.text-accent-brown {
+  color: #8C6A5D;
+}
+.text-red-500 {
+  color: #ef4444;
+}
+.text-green-500 {
+  color: #22c55e;
+}
+
+/* Border utilities */
+.border {
+  border-width: 1px;
+}
+.border-b {
+  border-bottom-width: 1px;
+}
+.border-gray-300 {
+  border-color: #d1d5db;
+}
+.border-transparent {
+  border-color: transparent;
+}
+
+/* Rounded utilities */
+.rounded-lg {
+  border-radius: 0.5rem;
+}
+.rounded-full {
+  border-radius: 9999px;
+}
+.rounded-2xl {
+  border-radius: 1rem;
+}
+
+/* Shadow utilities */
+.shadow-2xl {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+/* Object fit */
+.object-cover {
+  object-fit: cover;
+}
+
+/* Transforms and transitions */
+.scale-105 {
+  transform: scale(1.05);
+}
+.-translate-y-0\.5 {
+  transform: translateY(-0.125rem);
+}
+.translate-y-0\.5 {
+  transform: translateY(0.125rem);
+}
+.transition {
+  transition: all 0.3s ease;
+}
+.transition-all {
+  transition: all 0.3s ease;
+}
+.transition-transform {
+  transition: transform 0.3s ease;
+}
+.duration-300 {
+  transition-duration: 0.3s;
+}
+.duration-500 {
+  transition-duration: 0.5s;
+}
+.ease-in-out {
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Hover states */
+.hover\:bg-gray-100:hover {
+  background-color: #f3f4f6;
+}
+.hover\:text-accent-brown:hover {
+  color: #8C6A5D;
+}
+.hover\:underline:hover {
+  text-decoration: underline;
+}
+.hover\:scale-105:hover {
+  transform: scale(1.05);
+}
+
+/* Grid utilities */
+.grid {
+  display: grid;
+}
+.grid-cols-1 {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+@media (min-width: 768px) {
+  .md\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Responsive breakpoints */
+@media (min-width: 640px) {
+  .sm\:p-12 {
+    padding: 3rem;
+  }
+  .sm\:p-8 {
+    padding: 2rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .md\:min-h-0 {
+    min-height: 0;
+  }
+  .md\:flex {
+    display: flex;
+  }
+  .md\:hidden {
+    display: none;
+  }
+  .md\:space-x-4 {
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .lg\:h-10 {
+    height: 2.5rem;
+  }
+  .lg\:hidden {
+    display: none;
+  }
+  .lg\:block {
+    display: block;
+  }
+  .lg\:inline {
+    display: inline;
+  }
+  .lg\:flex {
+    display: flex;
+  }
+  .lg\:px-6 {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+  .lg\:space-x-4 > :not([hidden]) ~ :not([hidden]) {
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+  .lg\:text-sm {
+    font-size: 0.875rem;
+  }
+}
+
+/* Additional color definitions */
+.bg-accent-brown {
+  background-color: #8C6A5D;
+}
+.bg-accent-brown\/5 {
+  background-color: rgba(140, 106, 93, 0.05);
+}
+.bg-bg-card {
+  background-color: #FFFFFF;
+}
+.bg-bg-primary {
+  background-color: #F5F5F5;
+}
+.bg-bg-secondary {
+  background-color: #E8E8E8;
+}
+.text-accent-brown-light {
+  color: #D4B896;
+}
+.text-accent-brown-dark {
+  color: #5D4037;
+}
+
+/* Additional spacing */
+.pt-32 {
+  padding-top: 8rem;
+}
+.space-y-6 > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 1.5rem;
+}
+.ml-4 {
+  margin-left: 1rem;
+}
+
+/* Backdrop and overflow */
+.backdrop-blur-lg {
+  backdrop-filter: blur(16px);
+}
+.overflow-hidden {
+  overflow: hidden;
+}
+
+/* Positioning */
+.fixed {
+  position: fixed;
+}
+.absolute {
+  position: absolute;
+}
+.relative {
+  position: relative;
+}
+.top-0 {
+  top: 0px;
+}
+.left-0 {
+  left: 0px;
+}
+.right-0 {
+  right: 0px;
+}
+.z-50 {
+  z-index: 50;
+}
+.z-40 {
+  z-index: 40;
+}
+
+/* Transformations for sliding panels */
+.-translate-x-full {
+  transform: translateX(-100%);
+}
+.translate-x-full {
+  transform: translateX(100%);
+}
+.translate-x-0 {
+  transform: translateX(0);
+}
+
+/* Animation for spinner */
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Scroll behavior */
+.scroll-smooth {
+  scroll-behavior: smooth;
+}
+
+/* Gradient backgrounds */
+.bg-gradient-to-r {
+  background-image: linear-gradient(to right, var(--tw-gradient-stops));
+}
+.from-\[\#8C6A5D\] {
+  --tw-gradient-from: #8C6A5D;
+}
+.to-\[\#73564B\] {
+  --tw-gradient-to: #73564B;
+}
+.hover\:from-\[\#73564B\]:hover {
+  --tw-gradient-from: #73564B;
+}
+.hover\:to-\[\#8C6A5D\]:hover {
+  --tw-gradient-to: #8C6A5D;
+}
+
+/* Scroll margin */
+.sm\:scroll-mt-16 {
+  scroll-margin-top: 4rem;
+}

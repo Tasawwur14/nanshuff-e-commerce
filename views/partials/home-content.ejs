@@ -1,0 +1,130 @@
+<section>
+            <div id="hero-slider" class="relative overflow-hidden shadow-2xl h-[25vh] lg:h-[65vh]">
+                <div class="slider-slide active absolute w-full h-full opacity-100">
+                    <img src="/images/home1.png" class="slider-image w-full h-full object-cover" alt="Slider Image 1" style="object-position: 50% 70%;">
+                </div>
+                <div class="slider-slide absolute w-full h-full opacity-0">
+                    <img src="/images/home2.png" class="slider-image w-full h-full object-cover" alt="Slider Image 2" style="object-position: 50% 70%;">
+                </div>
+                <div id="slider-dots" class="absolute bottom-5 left-1/2 -translate-x-1/2 flex space-x-2">
+                    <button class="slider-dot w-2 h-2 rounded-full bg-white/50 transition-colors"></button>
+                    <button class="slider-dot w-2 h-2 rounded-full bg-white/50 transition-colors"></button>
+                </div>
+            </div>
+        </section>
+        <section class="py-12 bg-bg-light">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-12" data-aos="fade-up">
+            <h2 class="text-4xl md:text-6xl font-serif">Popular Categories</h2>
+            <p class="text-text-secondary mt-4 max-w-2xl mx-auto">Discover our diverse range of products, crafted to perfection for your culinary needs.</p>
+        </div>
+        <div class="grid grid-cols-3 gap-4 md:grid-cols-3 lg:grid-cols-6 md:gap-6 text-center">
+            <a href="/products?category=French%20Fries" class="group transform hover:-translate-y-2 transition-transform duration-300" data-aos="fade-up" data-aos-delay="100">
+                <div class="relative overflow-hidden rounded-lg aspect-square shadow-md">
+                    <img src="/images/french-fries.png" alt="French Fries" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-black/5 group-hover:bg-black/10 transition-all duration-300"></div>
+                </div>
+                <h3 class="mt-4 font-semibold tracking-wider text-sm">French Fries</h3>
+            </a>
+             <a href="/products?category=Burger%20Patties" class="group transform hover:-translate-y-2 transition-transform duration-300" data-aos="fade-up" data-aos-delay="200">
+                <div class="relative overflow-hidden rounded-lg aspect-square shadow-md">
+                    <img src="/images/burgerpatties.png" alt="Burger Patties" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
+                     <div class="absolute inset-0 bg-black/5 group-hover:bg-black/10 transition-all duration-300"></div>
+                </div>
+                <h3 class="mt-4 font-semibold tracking-wider text-sm">Burger Patties</h3>
+            </a>
+             <a href="/products?category=Ready%20To%20Eat" class="group transform hover:-translate-y-2 transition-transform duration-300" data-aos="fade-up" data-aos-delay="300">
+                <div class="relative overflow-hidden rounded-lg aspect-square shadow-md">
+                    <img src="/images/readytoeat.png" alt="Ready To Eat" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
+                     <div class="absolute inset-0 bg-black/5 group-hover:bg-black/10 transition-all duration-300"></div>
+                </div>
+                <h3 class="mt-4 font-semibold tracking-wider text-sm">Ready To Eat</h3>
+            </a>
+             <a href="/products?category=Curries%20%7C%20Marinations%20%7C%20Sauces" class="group transform hover:-translate-y-2 transition-transform duration-300" data-aos="fade-up" data-aos-delay="400">
+                <div class="relative overflow-hidden rounded-lg aspect-square shadow-md">
+                    <img src="/images/sauce.jpeg" alt="Sauces" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
+                     <div class="absolute inset-0 bg-black/5 group-hover:bg-black/10 transition-all duration-300"></div>
+                </div>
+                <h3 class="mt-4 font-semibold tracking-wider text-sm">Curries & Sauces</h3>
+            </a>
+             <a href="/products?category=Creamy%20%26%20Dry%20Cakes" class="group transform hover:-translate-y-2 transition-transform duration-300" data-aos="fade-up" data-aos-delay="500">
+                <div class="relative overflow-hidden rounded-lg aspect-square shadow-md">
+                    <img src="/images/cake.png" alt="Cakes" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
+                     <div class="absolute inset-0 bg-black/5 group-hover:bg-black/10 transition-all duration-300"></div>
+                </div>
+                <h3 class="mt-4 font-semibold tracking-wider text-sm">Creamy & Dry Cakes</h3>
+            </a>
+             <a href="/products?category=Breads%20%26%20Pizza%20Base" class="group transform hover:-translate-y-2 transition-transform duration-300" data-aos="fade-up" data-aos-delay="600">
+                <div class="relative overflow-hidden rounded-lg aspect-square shadow-md">
+                    <img src="/images/breadandbase.png" alt="Pizza" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
+                     <div class="absolute inset-0 bg-black/5 group-hover:bg-black/10 transition-all duration-300"></div>
+                </div>
+                <h3 class="mt-4 font-semibold tracking-wider text-sm">Breads & Pizza Base</h3>
+            </a>
+        </div>
+    </div>
+</section>
+        <section id="featured" class="py-12 bg-bg-card border-y border-gray-200">
+            <div class="container mx-auto px-4">
+                <div class="flex flex-col md:flex-row justify-between items-center mb-12" data-aos="fade-up">
+                    <div class="text-center md:text-left">
+                        <h2 class="text-4xl md:text-6xl font-serif">Featured Collection</h2>
+                        <p class="text-text-secondary mt-2">Handpicked selections from our master chefs.</p>
+                    </div>
+                    <a href="/products" class="mt-10 bg-gradient-to-r from-[#8C6A5D] to-[#73564B] text-white font-bold py-3 px-8 rounded-md hover:from-[#73564B] hover:to-[#8C6A5D] transition-colors duration-300 inline-block shrink-0c">View All Products</a>
+                </div>
+                <div id="product-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+                    <% if (typeof featuredProducts !== 'undefined' && featuredProducts && featuredProducts.length > 0) { %>
+                        <% featuredProducts.forEach(function(product) { %>
+                            <div class="bg-white rounded-lg shadow-md overflow-hidden group relative flex flex-col h-full" data-aos="fade-up">
+                                <div class="relative overflow-hidden group">
+                                    <img src="<%= product.imageUrl || '/images/placeholder.png' %>" alt="<%= product.name %>" class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500">
+                                    <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                </div>
+                                <div class="p-6">
+                                    <h3 class="text-xl font-semibold mb-2"><%= product.name %></h3>
+                                    <p class="text-text-secondary text-sm mb-4"><%= product.short_description ? product.short_description.substring(0, 100) : '' %>...</p>
+                                    <div class="flex flex-wrap items-center justify-between">
+                                        <div class="flex flex-wrap items-baseline gap-2">
+                                            <span class="text-2xl font-bold text-accent-brown">₹<%= Number(product.price).toFixed(2) %></span>
+                                            <% if (product.mrp && product.mrp > 0 && product.discount > 0 && product.mrp != product.price) { %>
+                                                <span class="text-lg text-gray-500 line-through">₹<%= Number(product.mrp).toFixed(2) %></span>
+                                            <% } %>
+                                            <% if (product.discount > 0) { %>
+                                                <span class="text-sm font-semibold text-green-600 bg-green-100 px-2 py-1 rounded">(<%= product.discount %>% off)</span>
+                                            <% } %>
+                                        </div>
+                                        <a href="/product/<%= product.id %>" class="bg-gradient-to-r from-[#8C6A5D] to-[#73564B] text-white px-4 py-2 rounded-md hover:from-[#73564B] hover:to-[#8C6A5D] transition-colors">View Details</a>
+                                    </div>
+                                </div>
+                            </div>
+                        <% }); %>
+                    <% } %>
+                </div>
+            </div>
+        </section>
+        <section class="py-12 bg-bg-light">
+    <div class="container mx-auto px-4">
+        <h2 class="text-4xl md:text-6xl font-serif text-center mb-10" data-aos="fade-up">Our Esteemed Associates</h2>
+        <div class="marquee-container" data-aos="fade-up" data-aos-delay="100">
+            <div class="marquee">
+                 <img src="https://placehold.co/150x80/F9F7F3/aaaaaa?text=Atmosphere" alt="Atmosphere" class="filter grayscale hover:grayscale-0 opacity-90 hover:opacity-100">
+                <img src="https://placehold.co/150x80/F9F7F3/aaaaaa?text=Barista" alt="Barista" class="filter grayscale hover:grayscale-0 opacity-90 hover:opacity-100">
+                <img src="https://placehold.co/150x80/F9F7F3/aaaaaa?text=Behrouz" alt="Behrouz" class="mx-auto filter grayscale hover:grayscale-0 opacity-60 hover:opacity-100">
+                <img src="https://placehold.co/150x80/F9F7F3/aaaaaa?text=Reliance" alt="Reliance" class="mx-auto filter grayscale hover:grayscale-0 opacity-60 hover:opacity-100">
+                <img src="https://placehold.co/150x80/F9F7F3/aaaaaa?text=Curators" alt="Curators" class="mx-auto filter grayscale hover:grayscale-0 opacity-60 hover:opacity-100">
+                <img src="https://placehold.co/150x80/F9F7F3/aaaaaa?text=Faasos" alt="Faasos" class="mx-auto filter grayscale hover:grayscale-0 opacity-60 hover:opacity-100">
+                <img src="https://placehold.co/150x80/F9F7F3/aaaaaa?text=ITC+Hotels" alt="ITC Hotels" class="mx-auto filter grayscale hover:grayscale-0 opacity-60 hover:opacity-100">
+                <img src="https://placehold.co/150x80/F9F7F3/aaaaaa?text=Club+Mahindra" alt="Club Mahindra" class="mx-auto filter grayscale hover:grayscale-0 opacity-60 hover:opacity-100">
+                <img src="https://placehold.co/150x80/F9F7F3/aaaaaa?text=Atmosphere" alt="Atmosphere" class="mx-auto filter grayscale hover:grayscale-0 opacity-60 hover:opacity-100">
+                <img src="https://placehold.co/150x80/F9F7F3/aaaaaa?text=Barista" alt="Barista" class="mx-auto filter grayscale hover:grayscale-0 opacity-60 hover:opacity-100">
+                <img src="https://placehold.co/150x80/F9F7F3/aaaaaa?text=Behrouz" alt="Behrouz" class="mx-auto filter grayscale hover:grayscale-0 opacity-60 hover:opacity-100">
+                <img src="https://placehold.co/150x80/F9F7F3/aaaaaa?text=Reliance" alt="Reliance" class="mx-auto filter grayscale hover:grayscale-0 opacity-60 hover:opacity-100">
+                <img src="https://placehold.co/150x80/F9F7F3/aaaaaa?text=Curators" alt="Curators" class="mx-auto filter grayscale hover:grayscale-0 opacity-60 hover:opacity-100">
+                <img src="https://placehold.co/150x80/F9F7F3/aaaaaa?text=Faasos" alt="Faasos" class="mx-auto filter grayscale hover:grayscale-0 opacity-60 hover:opacity-100">
+                <img src="https://placehold.co/150x80/F9F7F3/aaaaaa?text=ITC+Hotels" alt="ITC Hotels" class="mx-auto filter grayscale hover:grayscale-0 opacity-60 hover:opacity-100">
+                <img src="https://placehold.co/150x80/F9F7F3/aaaaaa?text=Club+Mahindra" alt="Club Mahindra" class="mx-auto filter grayscale hover:grayscale-0 opacity-60 hover:opacity-100">
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,45 @@
+# Dependencies
+node_modules/
+
+# Environment and sensitive files
+.env
+.env.*
+!.env.example
+token.txt
+
+# Database files (local data, backups, and exports)
+*.sqlite
+*.sqlite3
+*.sqlite.bak
+*.db
+*.sqlite-wal
+*.sqlite-shm
+database-export.sql
+database-export.sql.zip
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+server.log
+
+# Testing, reports, and screenshots
+test-results/
+playwright-report/
+.playwright-mcp/
+coverage/
+
+# Operating System files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+ehthumbs.db
+
+# IDE & Editor files
+.vscode/
+.idea/
+*.swp
+*.swo

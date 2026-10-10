@@ -1,0 +1,121 @@
+<%- include('partials/header') -%>
+
+<section class="pt-40 pb-16 bg-gray-50">
+    <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            
+            <aside id="filters-sidebar" class="fixed top-0 left-0 h-full w-4/5 max-w-sm bg-white z-50 transform -translate-x-full transition-transform duration-300 p-6 shadow-lg 
+                                   lg:col-span-1 lg:static lg:transform-none lg:z-auto lg:h-auto lg:w-full lg:max-w-none lg:rounded-lg lg:self-start lg:sticky lg:top-28">
+
+                            <div class="flex justify-between items-center lg:hidden border-b pb-2 mb-4">
+                                <button id="close-filter-sidebar" class="text-gray-500 hover:text-gray-800">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                                </button>
+                            </div>
+
+                            <div class="flex justify-between items-center border-b pb-2 mb-4">
+                                <h3 class="text-xl font-semibold">Filters</h3>
+                                <button id="clear-filters-btn" class="text-sm text-accent-brown hover:underline">Clear All</button>
+                            </div>
+
+                            <div class="filter-group mb-6" id="category-filter-group">
+                                <h4 class="font-semibold mb-3">Category</h4>
+                                <div id="category-filters-container" class="space-y-2 max-h-72 overflow-y-auto">
+                                    <p class="text-sm text-gray-500">Loading...</p>
+                                </div>
+                            </div>
+
+                            <div class="filter-group mb-6">
+                                <h4 class="font-semibold mb-3">Availability</h4>
+                                <div id="availability-filters" class="space-y-2">
+                                    <div><input type="radio" name="availability" value="all" id="avail-all" checked><label for="avail-all" class="ml-2">All</label></div>
+                                    <div><input type="radio" name="availability" value="inStock" id="avail-instock"><label for="avail-instock" class="ml-2">In Stock Only</label></div>
+                                     <div><input type="radio" name="availability" value="outofStock" id="avail-outofstock"><label for="avail-outofstock" class="ml-2">Out of Stock</label></div>
+
+                                </div>
+                            </div>
+
+                            <div class="filter-group mb-6">
+                                <h4 class="font-semibold mb-4">Price Range</h4>
+                                <div id="price-slider" class="mb-2"></div>
+                                <div class="flex justify-between text-sm text-gray-600">
+                                    <span id="price-lower">₹0</span>
+                                    <span id="price-upper">₹10000</span>
+                                </div>
+                            </div>
+
+                            <div class="filter-group mb-6">
+                                <h4 class="font-semibold mb-3">Discount</h4>
+                                <div id="discount-filters" class="space-y-2">
+                                    <div><input type="radio" name="discount" value="0" id="disc-any" checked><label for="disc-any" class="ml-2">Any</label></div>
+                                    <div><input type="radio" name="discount" value="10" id="disc-10"><label for="disc-10" class="ml-2">10% & above</label></div>
+                                    <div><input type="radio" name="discount" value="20" id="disc-20"><label for="disc-20" class="ml-2">20% & above</label></div>
+                                    <div><input type="radio" name="discount" value="30" id="disc-30"><label for="disc-30" class="ml-2">30% & above</label></div>
+                                    <div><input type="radio" name="discount" value="50" id="disc-50"><label for="disc-50" class="ml-2">50% & above</label></div>
+                                </div>
+                            </div>
+
+                            <div class="filter-group">
+                                <h4 class="font-semibold mb-3">Dietary Preference</h4>
+                                <div id="dietary-filters" class="space-y-2">
+                                    <div><input type="radio" name="dietary" value="" id="diet-all" checked><label for="diet-all" class="ml-2">All</label></div>
+                                    <div><input type="radio" name="dietary" value="Veg" id="diet-veg"><label for="diet-veg" class="ml-2">Veg</label></div>
+                                    <div><input type="radio" name="dietary" value="Non-Veg" id="diet-nonveg"><label for="diet-nonveg" class="ml-2">Non-Veg</label></div>
+                                </div>
+                            </div>
+                        </aside>
+
+            <main class="lg:col-span-3">
+                <div class="flex flex-col sm:flex-row justify-between items-center mb-4">
+                     <p id="product-count" class="text-sm text-gray-600 mb-2 sm:mb-0">Loading...</p>
+                    <select id="sort-by" class="border rounded-md p-2 hidden md:block">
+                        <option value="default">Sort by: Latest</option>
+                        <option value="price_asc">Price: Low to High</option>
+                        <option value="price_desc">Price: High to Low</option>
+                        <option value="discount_asc">Discount: Low to High</option>
+                        <option value="discount_desc">Discount: High to Low</option>
+                    </select>
+                </div>
+                <div id="product-grid" class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-6 min-h-[500px]">
+                    <p class="col-span-full text-center pt-20">Loading products...</p>
+                </div>
+                <div id="pagination-container" class="flex justify-center items-center mt-8 space-x-2 sm:space-x-4">
+                    </div>
+            </main>
+        </div>
+    </div>
+</section>
+<div id="mobile-filter-bar" class="fixed bottom-0 left-0 w-full bg-white shadow-[0_-2px_10px_rgba(0,0,0,0.1)] z-40 flex lg:hidden">
+    <button id="mobile-sort-btn" class="flex-1 p-4 flex items-center justify-center border-r font-semibold">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="M3 4h18M3 10h12M3 16h6M16 14l3-3 3 3M19 5v9"/></svg>
+        <span>Sort By</span>
+    </button>
+    <button id="mobile-filter-btn" class="flex-1 p-4 flex items-center justify-center font-semibold">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="M22 3H2l8 9.46V19l4 2v-8.46L22 3z"/></svg>
+        <span>Filter</span>
+    </button>
+</div>
+
+<div id="filter-overlay" class="fixed inset-0 bg-black/50 z-40 hidden lg:hidden"></div>
+
+<div id="mobile-sort-modal" class="hidden fixed inset-0 z-50 bg-black/50 items-end">
+    <div id="mobile-sort-options" class="bg-white w-full rounded-t-2xl p-4 transform translate-y-full transition-transform">
+        <h3 class="font-bold text-lg mb-4 text-center">Sort By</h3>
+        <div id="mobile-sort-container" class="space-y-2">
+            </div>
+        <button id="close-sort-modal" class="w-full mt-4 p-3 bg-gray-200 rounded-lg font-semibold">Cancel</button>
+    </div>
+</div>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+    AOS.init({ duration: 800, once: true, offset: 100 });
+    if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+    }
+</script>
+<script src="/assets/js/products.js"></script>
+
+<%- include('partials/footer') -%>
+    </div>
+</div>

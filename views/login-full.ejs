@@ -1,0 +1,230 @@
+<%- include('partials/header') -%>
+
+<main class="pt-32 min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+   <div class="container mx-auto px-4">
+        <div class="w-full max-w-4xl mx-auto bg-bg-card rounded-2xl shadow-2xl overflow-hidden grid grid-cols-1 md:grid-cols-2">
+            <div class="p-8 sm:p-12 bg-accent-brown/5 hidden md:flex flex-col justify-center">
+                <div class="p-4 sm:p-8 text-center">
+                    <h2 class="font-serif text-4xl font-bold mb-4 text-accent-brown">NANSHHUF</h2>
+                    <p class="text-lg mb-8 text-text-secondary">Redefining Frozen Luxury, One Bite at a Time.</p>
+                    <div class="space-y-6 text-left">
+                        <div class="flex items-center">
+                            <i data-lucide="globe-2" class="w-6 h-6 text-accent-brown flex-shrink-0"></i>
+                            <div class="ml-4">
+                                <h3 class="font-semibold text-text-primary">Global Taste</h3>
+                                <p class="text-text-secondary text-sm">Timeless classics and global inspirations.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                             <i data-lucide="snowflake" class="w-6 h-6 text-accent-brown flex-shrink-0"></i>
+                            <div class="ml-4">
+                                <h3 class="font-semibold text-text-primary">Peak Freshness</h3>
+                                <p class="text-text-secondary text-sm">Our technology locks in the authentic taste.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <i data-lucide="clock" class="w-6 h-6 text-accent-brown flex-shrink-0"></i>
+                            <div class="ml-4">
+                                <h3 class="font-semibold text-text-primary">Effortless Convenience</h3>
+                                <p class="text-text-secondary text-sm">Enjoy gourmet flavors in minutes.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+           <div class="relative flex flex-col justify-center overflow-hidden p-8 sm:p-12 min-h-[550px] md:min-h-0">
+
+                <div id="login-panel" 
+                    class="absolute top-0 left-0 w-full h-full flex justify-center items-center translate-x-0 transition-transform duration-500 ease-in-out">
+                    <div class="w-full max-w-sm px-6"> <h3 class="text-3xl font-bold text-text-primary mb-2 text-center">Welcome Back</h3>
+                        <p class="text-text-secondary mb-8 text-center">Login to your Nanshhuf account.</p>
+                        <form id="login-form">
+                            <div class="relative mb-4">
+                                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                    <i data-lucide="mail" class="w-5 h-5 text-gray-400"></i>
+                                </div>
+                                <input type="email" id="login-email" placeholder="Email Address"
+                                    class="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg
+                                        focus:ring-2 focus:ring-accent-brown focus:border-transparent pl-10
+                                        text-text-primary placeholder-gray-500 transition">
+                            </div>
+                            <div class="relative mb-6">
+                                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                    <i data-lucide="lock" class="w-5 h-5 text-gray-400"></i>
+                                </div>
+                                <input type="password" id="login-password" placeholder="Password"
+                                    class="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg
+                                        focus:ring-2 focus:ring-accent-brown focus:border-transparent pl-10
+                                        text-text-primary placeholder-gray-500 transition">
+                            </div>
+                            <div id="login-message" class="text-center text-sm font-medium mb-4 h-5"></div>
+                            <div class="text-right mb-6">
+                                <a href="#" id="show-forgot-btn"
+                                class="text-sm text-accent-brown hover:underline transition">
+                                Forgot Password?
+                                </a>
+                            </div>
+                            <button type="submit"
+                                class="w-full py-3 px-6 rounded-lg text-white font-bold bg-gradient-to-r from-[#8C6A5D] to-[#73564B] hover:from-[#73564B] hover:to-[#8C6A5D] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#8C6A5D] transition-all duration-300 transform hover:scale-105">
+                                Login
+                            </button>
+                        </form>
+                        <div class="mt-6 text-center">
+                            <p class="text-sm text-text-secondary">
+                                Don't have an account? <a href="#" id="show-signup-btn"
+                                class="font-bold text-accent-brown hover:underline">Sign Up</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+
+            <div id="signup-panel" class="absolute top-0 left-0 w-full h-full flex justify-center items-center translate-x-full transition-transform duration-500 ease-in-out">
+                <div class="w-full max-w-sm px-6">
+                    <h3 class="text-3xl font-bold text-text-primary mb-2 text-center">Create Account</h3>
+                    <p class="text-text-secondary mb-8 text-center">Join the Nanshhuf family.</p>
+                    <form id="signup-form">
+                        <div class="relative mb-4">
+                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                <i data-lucide="user" class="w-5 h-5 text-gray-400"></i>
+                            </div>
+                            <input type="text" id="signup-name" placeholder="Full Name" class="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent pl-10 text-text-primary placeholder-gray-500 transition">
+                        </div>
+                        <div class="relative mb-4">
+                             <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                <i data-lucide="mail" class="w-5 h-5 text-gray-400"></i>
+                            </div>
+                            <input type="email" id="signup-email" placeholder="Email Address" class="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent pl-10 text-text-primary placeholder-gray-500 transition">
+                        </div>
+                        <div class="relative mb-4">
+                             <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                               <i data-lucide="lock" class="w-5 h-5 text-gray-400"></i>
+                            </div>
+                            <input type="password" id="signup-password" placeholder="Password" class="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent pl-10 text-text-primary placeholder-gray-500 transition">
+                        </div>
+                        <div class="relative mb-6">
+                             <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                               <i data-lucide="lock" class="w-5 h-5 text-gray-400"></i>
+                            </div>
+                            <input type="password" id="signup-confirm-password" placeholder="Confirm Password" class="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent pl-10 text-text-primary placeholder-gray-500 transition">
+                        </div>
+                        <div id="signup-message" class="text-center text-sm font-medium mb-4 h-5"></div>
+                        <button type="submit" class="w-full py-3 px-6 rounded-lg text-white font-bold bg-gradient-to-r from-[#8C6A5D] to-[#73564B] hover:from-[#73564B] hover:to-[#8C6A5D] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#8C6A5D] transition-all duration-300 transform hover:scale-105 mt-2">Create Account</button>
+                    </form>
+                    <div class="mt-6 text-center">
+                        <p class="text-sm text-text-secondary">
+                            Already have an account? <a href="#" id="show-login-btn-from-signup" class="font-bold text-accent-brown hover:underline">Log In</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="forgot-panel" class="absolute top-0 left-0 w-full h-full flex justify-center items-center translate-x-full transition-transform duration-500 ease-in-out">
+                <div class="w-full max-w-sm px-6">
+                    <h3 class="text-3xl font-bold text-text-primary mb-2 text-center">Reset Password</h3>
+                    <p class="text-text-secondary mb-8 text-center">Enter your email to get a reset link.</p>
+                    <form id="forgot-form">
+                        <div class="relative mb-6">
+                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                <i data-lucide="mail" class="w-5 h-5 text-gray-400"></i>
+                            </div>
+                            <input type="email" id="forgot-email" placeholder="Email Address" class="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent pl-10 text-text-primary placeholder-gray-500 transition">
+                        </div>
+                        <div id="forgot-message" class="text-center text-sm font-medium mb-4 h-5"></div>
+                        <button type="submit" class="w-full py-3 px-6 rounded-lg text-white font-bold bg-gradient-to-r from-[#8C6A5D] to-[#73564B] hover:from-[#73564B] hover:to-[#8C6A5D] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#8C6A5D] transition-all duration-300 transform hover:scale-105 mt-6">Send Reset Link</button>
+                    </form>
+                    <div class="mt-6 text-center">
+                        <p class="text-sm text-text-secondary">
+                            Remembered your password? <a href="#" id="show-login-btn-from-forgot" class="font-bold text-accent-brown hover:underline">Log In</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+   </div>
+</main>
+
+<script src="/assets/js/login.js"></script>
+
+<script>
+    // Ensure login/signup/forgot panel toggles work even if router initializers didn't attach.
+    (function(){
+        function switchPanel(panelToShow){
+            const loginPanel = document.getElementById('login-panel');
+            const signupPanel = document.getElementById('signup-panel');
+            const forgotPanel = document.getElementById('forgot-panel');
+            const panels = [loginPanel, signupPanel, forgotPanel].filter(Boolean);
+            panels.forEach(panel => {
+                panel.classList.add('transition-transform','duration-500','ease-in-out');
+                if (panel !== panelToShow) {
+                    panel.classList.add(panel === loginPanel ? '-translate-x-full' : 'translate-x-full');
+                    panel.classList.remove('translate-x-0');
+                }
+            });
+            if (panelToShow) {
+                panelToShow.classList.remove('-translate-x-full','translate-x-full');
+                panelToShow.classList.add('translate-x-0');
+            }
+        }
+
+        document.getElementById('show-signup-btn')?.addEventListener('click', function(e){ e.preventDefault(); switchPanel(document.getElementById('signup-panel')); });
+        document.getElementById('show-login-btn-from-signup')?.addEventListener('click', function(e){ e.preventDefault(); switchPanel(document.getElementById('login-panel')); });
+        document.getElementById('show-forgot-btn')?.addEventListener('click', function(e){ e.preventDefault(); switchPanel(document.getElementById('forgot-panel')); });
+        document.getElementById('show-login-btn-from-forgot')?.addEventListener('click', function(e){ e.preventDefault(); switchPanel(document.getElementById('login-panel')); });
+    })();
+</script>
+
+<script>
+    // Inline signup form submit handler (fallback) to POST to API when router code is not present
+    (function(){
+        const signupForm = document.getElementById('signup-form');
+        if (!signupForm || signupForm.dataset.inlineHandlerAttached) return;
+        signupForm.dataset.inlineHandlerAttached = '1';
+
+        const showMessage = (text, isError) => {
+            const el = document.getElementById('signup-message');
+            if (!el) return;
+            el.innerText = text;
+            el.className = `text-center text-sm font-medium mb-4 h-5 ${isError ? 'text-red-500' : 'text-green-500'}`;
+            if (!isError) setTimeout(() => el.innerText = '', 3000);
+        };
+
+        signupForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const fullName = (document.getElementById('signup-fullname') || document.getElementById('signup-name'))?.value || '';
+            const email = document.getElementById('signup-email')?.value || '';
+            const password = document.getElementById('signup-password')?.value || '';
+            const confirm = (document.getElementById('confirm-password') || document.getElementById('signup-confirm-password'))?.value || '';
+            if (password !== confirm) {
+                showMessage('Passwords do not match!', true);
+                return;
+            }
+            try {
+                const res = await fetch('/api/auth/signup', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ fullName, email, password })
+                });
+                const data = await res.json().catch(() => ({}));
+                if (res.ok) {
+                    showMessage('Signup successful! Redirecting to login...', false);
+                    setTimeout(() => {
+                        // switch to login panel
+                        const loginPanel = document.getElementById('login-panel');
+                        const signupPanel = document.getElementById('signup-panel');
+                        if (signupPanel) { signupPanel.classList.add('translate-x-full'); signupPanel.classList.remove('translate-x-0'); }
+                        if (loginPanel) { loginPanel.classList.remove('-translate-x-full'); loginPanel.classList.add('translate-x-0'); }
+                    }, 1200);
+                } else {
+                    showMessage(data.message || 'Signup failed', true);
+                }
+            } catch (err) {
+                showMessage('Server error. Please try again later.', true);
+            }
+        });
+    })();
+</script>
+
+<%- include('partials/footer') -%>

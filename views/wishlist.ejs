@@ -1,0 +1,130 @@
+<%- include('partials/header') -%>
+
+<div class="max-w-6xl mx-auto px-4 py-8">
+    <h1 class="text-3xl font-serif text-center mb-8">My Wishlist</h1>
+    
+    <div id="wishlist-container">
+        <div id="wishlist-content" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <!-- Wishlist items will be loaded here -->
+        </div>
+        
+        <div id="empty-wishlist" class="hidden text-center py-12">
+            <div class="bg-gray-200 border-2 border-dashed rounded-xl w-16 h-16 mx-auto flex items-center justify-center text-gray-500 mb-4">
+                <i data-lucide="heart" class="w-8 h-8"></i>
+            </div>
+            <h3 class="text-xl font-semibold mb-2">Your wishlist is empty</h3>
+            <p class="text-gray-600 mb-6">Items you save will appear here</p>
+            <a href="/products" class="inline-block bg-accent-brown text-white py-2 px-6 rounded-md hover:bg-[#73564B] transition-colors">
+                Browse Products
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Load wishlist items when the page loads
+    document.addEventListener('DOMContentLoaded', async function() {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            // Redirect to login if not authenticated
+            window.router.navigate('/login');
+            return;
+        }
+        
+        try {
+            const response = await fetch('/api/users/wishlist', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            
+            if (response.ok) {
+                const wishlistItems = await response.json();
+                
+                if (wishlistItems.length === 0) {
+                    document.getElementById('empty-wishlist').classList.remove('hidden');
+                    document.getElementById('wishlist-content').classList.add('hidden');
+                } else {
+                    document.getElementById('empty-wishlist').classList.add('hidden');
+                    document.getElementById('wishlist-content').classList.remove('hidden');
+                    
+                    const wishlistContainer = document.getElementById('wishlist-content');
+                    wishlistContainer.innerHTML = wishlistItems.map(item => `
+                        <div class="bg-white rounded-lg shadow-md overflow-hidden group relative transition-transform duration-300 hover:-translate-y-1">
+                            <div class="absolute top-3 right-3">
+                                <button class="remove-from-wishlist-btn bg-white/70 backdrop-blur-sm p-2 rounded-full z-20 hover:bg-red-100 transition-colors" data-product-id="${item.product.id || item.product._id}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            
+                            <a href="/product/${item.product.id || item.product._id}" class="block">
+                                <div class="relative overflow-hidden h-56 bg-gray-200">
+                                    <img src="${item.product.imageUrl || 'https://placehold.co/400x400'}" 
+                                         alt="${item.product.name}" 
+                                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+                                </div>
+                                <div class="p-4">
+                                    <h3 class="font-semibold text-md truncate" title="${item.product.name}">${item.product.name}</h3>
+                                    <div class="flex items-center gap-2 mt-2">
+                                        <p class="text-accent-brown font-bold whitespace-nowrap">₹${Number(item.product.price).toFixed(2)}</p>
+                                        ${item.product.mrp && item.product.mrp > 0 && item.product.discount > 0 && item.product.mrp !== item.product.price ? `<p class="text-gray-500 line-through text-sm">₹${Number(item.product.mrp).toFixed(2)}</p>` : ''}
+                                        ${item.product.discount > 0 ? `<p class="text-green-600 text-sm bg-green-100 px-2 py-1 rounded">(${item.product.discount}% off)</p>` : ''}
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    `).join('');
+                    
+                    // Attach event listeners to remove buttons
+                    document.querySelectorAll('.remove-from-wishlist-btn').forEach(button => {
+                        button.addEventListener('click', async function(e) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            
+                            const productId = this.getAttribute('data-product-id');
+                            
+                            // Remove item from wishlist
+                            try {
+                                const response = await fetch(`/api/users/wishlist/${productId}`, {
+                                    method: 'DELETE',
+                                    headers: {
+                                        'Authorization': `Bearer ${token}`,
+                                        'Content-Type': 'application/json'
+                                    }
+                                });
+                                
+                                if (response.ok) {
+                                    // Remove item from the UI
+                                    this.closest('.group').remove();
+                                    
+                                    // Show empty message if wishlist is now empty
+                                    if (document.querySelectorAll('#wishlist-content > div').length === 0) {
+                                        document.getElementById('empty-wishlist').classList.remove('hidden');
+                                        document.getElementById('wishlist-content').classList.add('hidden');
+                                    }
+                                } else {
+                                    console.error('Failed to remove item from wishlist');
+                                }
+                            } catch (error) {
+                                console.error('Error removing item:', error);
+                            }
+                        });
+                    });
+                    
+                    if (typeof lucide !== 'undefined' && lucide.createIcons) {
+                        try { lucide.createIcons(); } catch (e) { console.warn('lucide.createIcons failed', e); }
+                    }
+                }
+            } else {
+                console.error('Failed to fetch wishlist');
+                // Redirect to login if wishlist request fails
+                window.router.navigate('/login');
+            }
+        } catch (error) {
+            console.error('Error fetching wishlist:', error);
+        }
+    });
+</script>
+<%- include('partials/footer') -%>

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Orders - Nanshhuf</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-bg-light text-text-primary min-h-screen pt-32">
+    <%- include('partials/header') %>
+
+    <main class="container mx-auto px-4 py-8 mt-16">
+        <h1 class="text-3xl font-bold text-center mb-8 text-text-primary">My Orders</h1>
+        
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div id="orders-container">
+                <div id="loading-orders" class="text-center py-10">
+                    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-accent-brown mx-auto"></div>
+                    <p class="mt-4 text-text-secondary">Loading your orders...</p>
+                </div>
+                
+                <div id="no-orders" class="hidden text-center py-10">
+                    <i data-lucide="package" class="w-16 h-16 text-gray-300 mx-auto mb-4"></i>
+                    <h3 class="text-xl font-semibold text-text-secondary mb-2">No orders yet</h3>
+                    <p class="text-text-secondary">You haven't placed any orders yet.</p>
+                    <a href="/" class="mt-4 inline-block px-6 py-2 rounded-md text-white bg-gradient-to-r from-[#8C6A5D] to-[#73564B] hover:from-[#73564B] hover:to-[#8C6A5D] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#8C6A5D] transition-colors shadow-sm font-medium">
+                    Start Shopping
+                    </a>
+
+                </div>
+                
+                <div id="orders-list" class="hidden"></div>
+            </div>
+        </div>
+    </main>
+
+    <%- include('partials/footer') %>
+
+    <script>
+        // Initialize Lucide icons
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+
+        // Fetch and display user's orders
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const response = await fetch('/api/orders/myorders', {
+                    credentials: 'include'
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    const orders = data.orders || [];
+                    
+                    const loadingContainer = document.getElementById('loading-orders');
+                    const noOrdersContainer = document.getElementById('no-orders');
+                    const ordersListContainer = document.getElementById('orders-list');
+                    
+                    if (orders.length === 0) {
+                        // Hide loading, show "no orders" message
+                        loadingContainer.classList.add('hidden');
+                        noOrdersContainer.classList.remove('hidden');
+                    } else {
+                        // Hide loading, show orders list
+                        loadingContainer.classList.add('hidden');
+                        ordersListContainer.classList.remove('hidden');
+                        
+                        // Format and display orders
+                        const ordersHtml = orders.map(order => {
+                            // Format the date
+                            const createdAt = new Date(order.createdAt);
+                            const formattedDate = createdAt.toLocaleDateString('en-IN', {
+                                day: '2-digit',
+                                month: 'short',
+                                year: 'numeric'
+                            });
+                            
+                            // CRITICAL FIX: Ensure items is an array (handle JSON string from production DB)
+                            let items = order.items;
+                            if (typeof items === 'string') {
+                                try {
+                                    items = JSON.parse(items);
+                                } catch (e) {
+                                    console.error('Failed to parse items for order', order.id, e);
+                                    items = [];
+                                }
+                            }
+                            // Ensure items is always an array
+                            if (!Array.isArray(items)) {
+                                items = [];
+                            }
+                            
+                            // Calculate total items
+                            const totalItems = items.reduce((sum, item) => sum + (item.quantity || 0), 0);
+                            
+                            return `
+                                <div class="border border-gray-200 rounded-lg p-4 mb-4 hover:shadow-md transition-shadow">
+                                    <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                                        <div class="mb-2 md:mb-0">
+                                            <h3 class="font-bold text-lg text-text-primary">Order #${order.orderNumber}</h3>
+                                            <p class="text-sm text-text-secondary">${formattedDate} | ${totalItems} item${totalItems > 1 ? 's' : ''}</p>
+                                        </div>
+                                        
+                                        <div class="flex flex-col md:flex-row items-start md:items-center md:space-x-4 space-y-2 md:space-y-0">
+                                            <div>
+                                                <span class="text-sm font-medium text-text-secondary">Status:</span>
+                                                <span class="ml-2 px-2 py-1 rounded-full text-xs font-medium
+                                                    ${order.status === 'Delivered' ? 'bg-green-100 text-green-800' :
+                                                      order.status === 'Shipped' ? 'bg-blue-100 text-blue-800' :
+                                                      order.status === 'Processing' ? 'bg-yellow-100 text-yellow-800' :
+                                                      order.status === 'Cancelled' ? 'bg-red-100 text-red-800' :
+                                                      'bg-gray-100 text-gray-800'}">
+                                                    ${order.status}
+                                                </span>
+                                            </div>
+                                            <div>
+                                                <span class="text-sm font-medium text-text-secondary">Total:</span>
+                                                <span class="ml-1 font-bold text-accent-brown">₹${(Number(order.totalAmount) || 0).toFixed(2)}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mt-4">
+                                        <h4 class="font-medium text-text-primary mb-2">Items in this order:</h4>
+                                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                                            ${(items || []).map(item => {
+                                                const product = item.product || {};
+                                                return `
+                                                    <div class="flex items-center border border-gray-100 rounded p-2">
+                                                        <img src="${product.imageUrl || '/images/placeholder.png'}" 
+                                                             alt="${product.name || 'Product'}" 
+                                                             class="w-12 h-12 object-cover rounded mr-2">
+                                                        <div class="flex-grow min-w-0">
+                                                            <p class="text-sm truncate">${product.name || 'Product'}</p>
+                                                            <p class="text-xs text-text-secondary">Qty: ${item.quantity || 0}</p>
+                                                            <p class="text-sm font-bold text-accent-brown">₹${(item.price * item.quantity).toFixed(2)}</p>
+                                                        </div>
+                                                    </div>
+                                                `;
+                                            }).join('')}
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mt-4 flex justify-end">
+                                        <a href="/order/${order.id}" class="text-accent-brown hover:underline text-sm font-medium">
+                                            View Details →
+                                        </a>
+                                    </div>
+                                </div>
+                            `;
+                        }).join('');
+                        
+                        ordersListContainer.innerHTML = ordersHtml;
+                    }
+                } else {
+                    const errorData = await response.json().catch(() => ({}));
+                    console.error('Failed to fetch orders:', response.status, errorData);
+                    
+                    // Only redirect to login if it's an authentication error (401/403)
+                    // For other server errors, show an error message instead of redirecting
+                    if (response.status === 401 || response.status === 403) {
+                        // Redirect to login if order request fails due to authentication
+                        window.location.href = '/login';
+                    } else {
+                        // For other errors (500, 503, etc.), show an error message
+                        document.getElementById('loading-orders').innerHTML = `
+                            <div class="text-center py-10">
+                                <i data-lucide="alert-circle" class="w-16 h-16 text-red-500 mx-auto mb-4"></i>
+                                <h3 class="text-xl font-semibold text-text-secondary mb-2">Error Loading Orders</h3>
+                                <p class="text-text-secondary">Please try again later.</p>
+                            </div>
+                        `;
+                        if (typeof lucide !== 'undefined') {
+                            lucide.createIcons();
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading orders:', error);
+                
+                // For network errors or other unexpected errors, check if user is authenticated
+                // first by attempting a lightweight request
+                try {
+                    const authCheck = await fetch('/api/orders/myorders', {
+                        method: 'HEAD', // Lightweight request to check authentication
+                        credentials: 'include'
+                    });
+                    
+                    if (authCheck.status === 401 || authCheck.status === 403) {
+                        // User is not authenticated, redirect to login
+                        window.location.href = '/login';
+                    } else {
+                        // For other network errors, show an error message
+                        document.getElementById('loading-orders').innerHTML = `
+                            <div class="text-center py-10">
+                                <i data-lucide="alert-circle" class="w-16 h-16 text-red-500 mx-auto mb-4"></i>
+                                <h3 class="text-xl font-semibold text-text-secondary mb-2">Error Loading Orders</h3>
+                                <p class="text-text-secondary">Please check your connection and try again later.</p>
+                            </div>
+                        `;
+                        if (typeof lucide !== 'undefined') {
+                            lucide.createIcons();
+                        }
+                    }
+                } catch (authError) {
+                    // If auth check also fails, assume authentication issue
+                    window.location.href = '/login';
+                }
+            }
+        });
+    </script>
+</body>
+</html>

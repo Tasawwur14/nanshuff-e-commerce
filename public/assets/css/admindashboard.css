@@ -1,0 +1,91 @@
+:root {
+    --bg-light: #F9F6F4;
+    --bg-card: #FFFFFF;
+    --text-primary: #333333;
+    --text-secondary: #666666;
+    --accent-brown: #8C6A5D;
+    --accent-brown-darker: #73564B;
+    --border-color: #E5E7EB;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+}
+
+.logo-text {
+    font-family: 'Cormorant Garamond', serif;
+    color: var(--accent-brown);
+}
+
+/* Image logo alternate for admin sidebar/header */
+.logo-image {
+    display: inline-block;
+    max-height: 2.5rem;
+}
+
+.sidebar {
+    transition: transform 0.3s ease-in-out;
+}
+
+.sidebar-link {
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.sidebar-link:hover,
+.sidebar-link.active {
+    background-color: #F3F4F6;
+    color: var(--accent-brown);
+}
+
+.sidebar-link.active i {
+    color: var(--accent-brown);
+}
+
+.stat-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+}
+
+.table-header {
+    background-color: #F9FAFB;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.table-row:hover {
+    background-color: #F9FAFB;
+}
+
+.input-field {
+    background-color: #F9FAFB;
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+.input-field:focus {
+    /* Use box-shadow to emulate a focus ring for cross-browser compatibility */
+    box-shadow: 0 0 0 3px rgba(140,106,93,0.12);
+    border-color: var(--accent-brown);
+}
+
+.login-btn {
+    transition: all 0.3s ease;
+}
+
+.login-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.notification-dot {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    width: 8px;
+    height: 8px;
+    background-color: #ef4444;
+    border-radius: 50%;
+    border: 1px solid var(--bg-card);
+}
+
+.dropdown {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}

@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nanshhuf - Premium Frozen Food Solutions</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.js" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/5.4.4/photoswipe.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/5.4.4/photoswipe-lightbox.esm.min.js" type="module"></script>
+
+    <link rel="stylesheet" href="/assets/css/index.css">
+</head>
+<body class="bg-bg-light text-text-primary">
+
+    <header id="main-header" class="bg-white/90 backdrop-blur-lg border-b border-gray-200/30 fixed top-0 z-50 w-full transition-all duration-300">
+        <div class="container mx-auto px-4 lg:px-6">
+            <div id="header-top-bar" class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-4">
+                    <button id="mobile-menu-button" class="lg:hidden text-text-primary">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
+                    <a href="/home" class="flex-shrink-0" data-aos="fade-down">
+                        <img src="/images/brand/Eagle%20logo.png" alt="Nanshhuf" class="logo-image h-8 lg:h-10">
+                    </a>
+                    <div class="hidden lg:block" data-aos="fade-down" data-aos-delay="100">
+                        <form id="search-form" class="relative group">
+                            <input id="search-input" type="search" placeholder="Search..." class="w-64 bg-gray-100 py-2 pl-10 pr-4 rounded-full border-2 border-transparent group-hover:border-accent-brown focus:border-accent-brown focus:outline-none transition-all duration-300">
+                            <button type="submit" class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 cursor-pointer">
+                                <i data-lucide="search" class="w-5 h-5"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                
+                <div class="flex items-center justify-end space-x-2 md:space-x-4">
+                    <div id="header-icons-group" class="flex items-center space-x-2 md:space-x-4">
+                        <button id="mobile-search-button" class="lg:hidden text-text-primary hover:text-accent-brown transition-colors">
+                            <i data-lucide="search" class="w-6 h-6"></i>
+                        </button>
+                        <a href="/login" id="mobile-account-icon" class="lg:hidden text-text-primary hover:text-accent-brown transition-colors">
+                            <i data-lucide="user" class="w-6 h-6"></i>
+                        </a>
+                        <a href="/login" id="desktop-account-icon" class="hidden lg:flex items-center space-x-2 text-text-primary hover:text-accent-brown transition-colors cursor-pointer relative" data-aos="fade-down" data-aos-delay="200">
+                            <i data-lucide="user" class="w-5 h-5"></i>
+                            <span class="text-sm font-semibold">ACCOUNT</span>
+                        </a>
+                        <div id="account-dropdown" class="hidden absolute top-full right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
+                            <a href="/profile" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">My Profile</a>
+                            <a href="/myorders" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">My Orders</a>
+                            <a href="/wishlist" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Wishlist</a>
+                            <a href="#" id="logout-btn" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Logout</a>
+                        </div>
+                        <a href="/cart" id="cart-icon" class="relative flex items-center space-x-2 text-text-primary hover:text-accent-brown transition-colors" data-aos="fade-down" data-aos-delay="300">
+                            <i data-lucide="shopping-cart" class="w-6 h-6 lg:w-5 lg:h-5"></i>
+                            <span class="hidden lg:inline text-sm font-semibold">CART</span>
+                            <span id="cart-badge" class="absolute -top-1 -left-2 bg-red-600 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center hidden">0</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <nav class="hidden lg:flex justify-center items-center border-t border-gray-200/30 py-3" data-aos="fade-down" data-aos-delay="200">
+                <div class="flex justify-center items-center space-x-8 text-sm font-semibold tracking-wider text-text-primary">
+                    <a href="/home" class="hover:text-accent-brown transition-all duration-300 transform hover:-translate-y-0.5">HOME</a>
+                    <div class="relative group">
+                        <button class="py-3 flex items-center hover:text-accent-brown transition-colors duration-300">
+                            <span>PRODUCT CATEGORIES</span>
+                            <i data-lucide="chevron-down" class="w-4 h-4 ml-1 transition-transform duration-300 group-hover:rotate-180"></i>
+                        </button>
+                        <div class="dropdown-menu absolute top-full left-0 mt-1 min-w-full 
+                                    bg-white/90 backdrop-blur-lg shadow-xl rounded-md
+                                    opacity-0 invisible group-hover:opacity-100 group-hover:visible 
+                                    transition-all duration-300">
+                            <div class="py-2">
+                                <a href="/products?category=French%20Fries" class="block px-4 py-2 text-sm text-text-secondary hover:bg-gray-100 hover:text-accent-brown">French Fries</a>
+                                <a href="/products?category=Burger%20Patties" class="block px-4 py-2 text-sm text-text-secondary hover:bg-gray-100 hover:text-accent-brown">Burger Patties</a>
+                                <a href="/products?category=Ready%20To%20Eat" class="block px-4 py-2 text-sm text-text-secondary hover:bg-gray-100 hover:text-accent-brown">Ready To Eat</a>
+                                <a href="/products?category=Curries%20%7C%20Marinations%20%7C%20Sauces" class="block px-4 py-2 text-sm text-text-secondary hover:bg-gray-100 hover:text-accent-brown">Curries | Marinations | Sauces</a>
+                                <a href="/products?category=Creamy%20%26%20Dry%20Cakes" class="block px-4 py-2 text-sm text-text-secondary hover:bg-gray-100 hover:text-accent-brown">Creamy & Dry Cakes</a>
+                                <a href="/products?category=Breads%20%26%20Pizza%20Base" class="block px-4 py-2 text-sm text-text-secondary hover:bg-gray-100 hover:text-accent-brown">Breads & Pizza Base</a>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="/about" class="hover:text-accent-brown transition-all duration-300 transform hover:-translate-y-0.5">ABOUT US</a>
+                    <a href="/whyfrozen" class="hover:text-accent-brown transition-all duration-300 transform hover:-translate-y-0.5">WHY BUY FROZEN FOOD</a>
+                    <a href="/myths" class="hover:text-accent-brown transition-all duration-300 transform hover:-translate-y-0.5">FROZEN FOOD MYTHS</a>
+                    <a href="#" class="hover:text-accent-brown transition-all duration-300 transform hover:-translate-y-0.5">E-CATALOG</a>
+                    <a href="/contact" class="hover:text-accent-brown transition-all duration-300 transform hover:-translate-y-0.5">CONTACT US</a>
+                    <a href="#" class="hover:text-accent-brown transition-all duration-300 transform hover:-translate-y-0.5">BLOGS</a>
+                </div>
+            </nav>
+        </div>
+
+        <div id="mobile-search-wrapper" class="absolute top-0 left-0 w-full h-full bg-white/90 backdrop-blur-lg flex items-center px-4 transition-all duration-300 -translate-y-full lg:hidden">
+            <form id="mobile-search-form" class="relative w-full">
+                <input id="mobile-search-input" type="search" placeholder="Search..." class="w-full bg-gray-100 py-2 pl-10 pr-4 rounded-full border-2 border-transparent focus:border-accent-brown focus:outline-none">
+                <button type="submit" class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 cursor-pointer">
+                    <i data-lucide="search" class="w-5 h-5"></i>
+                </button>
+            </form>
+            <button id="close-search-button" class="text-text-primary ml-2 flex-shrink-0">
+                <i data-lucide="x" class="w-7 h-7"></i>
+            </button>
+        </div>
+        
+        <div id="mobile-menu" class="hidden lg:hidden bg-white/90 backdrop-blur-lg p-4 shadow-lg border-t border-gray-200/30">
+            <a href="/home" class="block py-2 hover:text-accent-brown transition-colors">HOME</a>
+            <button id="mobile-dropdown-button" class="w-full text-left py-2 flex justify-between items-center hover:text-accent-brown transition-colors">
+                PRODUCT CATEGORIES <span class="mobile-dropdown-icon-container"><i data-lucide="chevron-down" class="w-4 h-4"></i></span>
+            </button>
+            <div id="mobile-dropdown-menu" class="hidden pl-4">
+                <a href="/products?category=French%20Fries" class="block py-2 text-sm text-text-secondary hover:text-accent-brown">French Fries</a>
+                <a href="/products?category=Burger%20Patties" class="block py-2 text-sm text-text-secondary hover:text-accent-brown">Burger Patties</a>
+                <a href="/products?category=Ready%20To%20Eat" class="block py-2 text-sm text-text-secondary hover:text-accent-brown">Ready To Eat</a>
+                <a href="/products?category=Curries%20%7C%20Marinations%20%7C%20Sauces" class="block py-2 text-sm text-text-secondary hover:text-accent-brown">Curries | Marinations | Sauces</a>
+                <a href="/products?category=Creamy%20%26%20Dry%20Cakes" class="block py-2 text-sm text-text-secondary hover:text-accent-brown">Creamy & Dry Cakes</a>
+                <a href="/products?category=Breads%20%26%20Pizza%20Base" class="block py-2 text-sm text-text-secondary hover:text-accent-brown">Breads & Pizza Base</a>
+            </div>
+            <a href="/about" class="block py-2 hover:text-accent-brown transition-colors">ABOUT US</a>
+             <a href="/whyfrozen" class="block py-2 hover:text-accent-brown transition-colors">WHY BUY FROZEN FOOD</a>
+            <a href="/myths" class="block py-2 hover:text-accent-brown transition-colors">FROZEN FOOD MYTHS</a>
+            <a href="#" class="block py-2 hover:text-accent-brown transition-colors">E-CATALOG</a>
+            <a href="/contact" class="block py-2 hover:text-accent-brown transition-colors">CONTACT US</a>
+            <a href="#" class="block py-2 hover:text-accent-brown transition-colors">BLOGS</a>
+        </div>
+    </header>
+
+    <main id="main-content" class="pt-20">
+        <%- include('partials/home-content') -%>
+    </main>
+
+    <div id="modal-placeholder"></div>
+    <footer class="bg-bg-card text-text-primary border-t border-gray-200">
+        <div class="container mx-auto px-4 pt-12 pb-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-12">
+                <div>
+                    <h3 class="font-serif text-2xl font-bold text-accent-brown">NANSHHUF</h3>
+                    <p class="mt-4 text-sm text-text-secondary">Crafting the future of frozen cuisine.</p>
+                </div>
+
+                <div>
+                    <h4 class="font-semibold tracking-wider text-text-primary mb-4">Shop</h4>
+                    <ul class="space-y-3 text-sm text-text-secondary">
+                        <li><a href="/products?category=French%20Fries" class="hover:text-accent-brown transition-colors">French Fries</a></li>
+                        <li><a href="/products?category=Burger%20Patties" class="hover:text-accent-brown transition-colors">Burger Patties</a></li>
+                        <li><a href="/products?category=Ready%20To%20Eat" class="hover:text-accent-brown transition-colors">Ready to Eat</a></li>
+                        <li><a href="/products?category=Curries%20%7C%20Marinations%20%7C%20Sauces" class="hover:text-accent-brown transition-colors">Curries | Marinations | Sauces</a></li>
+                        <li><a href="/products?category=Creamy%20%26%20Dry%20Cakes" class="hover:text-accent-brown transition-colors">Creamy & Dry Cakes</a></li>
+                        <li><a href="/products?category=Breads%20%26%20Pizza%20Base" class="hover:text-accent-brown transition-colors">Breads & Pizza Base</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-semibold tracking-wider text-text-primary mb-4">Policies</h4>
+                    <ul class="space-y-3 text-sm text-text-secondary">
+                        <li><a href="/privacy" class="hover:text-accent-brown transition-colors">Privacy Policy</a></li>
+                        <li><a href="/return" class="hover:text-accent-brown transition-colors">Return Policy</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-semibold tracking-wider text-text-primary mb-4">Follow Us</h4>
+                    <div class="flex items-center space-x-4">
+                        <a href="https://www.facebook.com/share/1AHqu9Dvb3/" aria-label="Facebook" class="text-text-secondary hover:text-accent-brown transition-colors">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" />
+                            </svg>
+                        </a>
+                        <a href="https://www.instagram.com/nanshhuf" aria-label="Instagram" class="text-text-secondary hover:text-accent-brown transition-colors">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.024.06 1.378.06 3.808s-.012 2.784-.06 3.808c-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.024.048-1.378.06-3.808.06s-2.784-.012-3.808-.06c-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.048-1.024-.06-1.378-.06-3.808s.012-2.784.06-3.808c.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 016.08 2.525c.636-.247 1.363-.416 2.427-.465C9.53 2.013 9.884 2 12.315 2zM12 0C9.58 0 9.22.01 8.05.058c-1.26.05-2.228.24-3.15.58a6.876 6.876 0 00-2.32 1.417A6.875 6.875 0 00.58 4.377c-.34.922-.53 1.89-.58 3.15C0 8.78 0 9.14 0 11.685s.01 2.905.058 4.075c.05 1.26.24 2.228.58 3.15a6.876 6.876 0 001.417 2.32 6.875 6.875 0 002.32 1.417c.922.34 1.89.53 3.15.58 1.17.048 1.53.058 4.075.058s2.905-.01 4.075-.058c1.26-.05 2.228-.24 3.15-.58a6.876 6.876 0 002.32-1.417 6.875 6.875 0 001.417-2.32c.34-.922.53-1.89.58-3.15.048-1.17.058-1.53.058-4.075s-.01-2.905-.058-4.075c-.05-1.26-.24-2.228-.58-3.15a6.876 6.876 0 00-1.417-2.32A6.875 6.875 0 0019.623.58c-.922-.34-1.89-.53-3.15-.58C15.22.01 14.86 0 12.315 0h.002zM12 6.848a5.152 5.152 0 100 10.304 5.152 5.152 0 000-10.304zM12 15a3 3 0 110-6 3 3 0 010 6zM18.805 4.11a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" clip-rule="evenodd" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="font-semibold tracking-wider text-text-primary mb-4">Join Our Newsletter</h4>
+                    <p class="text-sm text-text-secondary mb-4">Get exclusive access to new products and offers.</p>
+                    <form class="flex shadow-md rounded-md border border-gray-200 focus-within:ring-2 focus-within:ring-accent-brown transition-all">
+                        <input type="email" placeholder="Your email" required class="w-full py-2 px-3 bg-bg-light text-text-primary rounded-l-md focus:outline-none">
+                        <button type="submit" class="bg-gradient-to-r from-[#8C6A5D] to-[#73564B] text-white font-bold py-2 px-4 rounded-r-md hover:from-[#73564B] hover:to-[#8C6A5D] transition-colors">Go</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-200 mt-8 pt-4 text-center">
+                <div class="flex justify-center items-center space-x-4 mb-4">
+                    <img src="/images/visa.png" alt="Visa" class="h-6">
+                    <img src="/images/rupay.png" alt="RuPay" class="h-6">
+                    <img src="/images/upi.png" alt="Upi" class="h-5">
+                    <img src="/images/mastercard.png" alt="Mastercard" class="h-6">
+                    <img src="/images/americanexpress.png" alt="American Express" class="h-8">
+                </div>
+                
+                <p class="text-sm text-gray-400">&copy; 2025 Nanshhuf. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>    
+    <button class="fixed bottom-5 right-5 bg-green-500 text-white p-4 rounded-full shadow-2xl hover:bg-green-600 transition-colors transform hover:scale-110 pulse-animation z-40">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+    </button>
+    
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="/assets/js/router.js" defer></script>
+    <script>
+        // --- FIX 1: Flag to prevent double loading ---
+        let hasLoadedFeaturedProducts = false;
+
+        // Initialize AOS (Animate On Scroll)
+        AOS.init({
+            duration: 800,
+            once: true,
+            offset: 100
+        });
+
+        // Initialize Lucide icons
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+
+        // NOTE: Mobile menu listeners are handled by SPARouter.initializeMobileHeader()
+        // Router attaches listeners using event delegation, which persists across navigation
+        // Do NOT attach listeners here - it causes duplicate listeners and conflicts
+
+        // --- FIX 2: Placeholder function for the new button ---
+        function addToCart(productId) {
+            console.log(`Adding product ${productId} to cart.`);
+            // TODO: Add your actual cart logic here (e.g., update badge, send API request)
+            
+            // Example: Update cart badge
+            const badge = document.getElementById('cart-badge');
+            if (badge) {
+                let currentCount = parseInt(badge.textContent) || 0;
+                currentCount++;
+                badge.textContent = currentCount;
+                badge.classList.remove('hidden');
+            }
+        }
+
+        // Load featured products
+        async function loadFeaturedProducts() {
+            // --- FIX 1 (continued): Check flag to prevent re-running ---
+            if (hasLoadedFeaturedProducts) return;
+            hasLoadedFeaturedProducts = true; // Set flag immediately to prevent race conditions
+
+            try {
+                const response = await fetch('/api/products/featured');
+                
+                // Check response status and content-type before parsing JSON
+                if (!response.ok) {
+                    const contentType = response.headers.get('content-type');
+                    if (contentType && contentType.includes('application/json')) {
+                        const error = await response.json();
+                        throw new Error(error.error || 'Failed to fetch featured products');
+                    } else {
+                        const text = await response.text();
+                        throw new Error(text || `HTTP ${response.status}`);
+                    }
+                }
+                
+                const data = await response.json();
+                
+                const productGrid = document.getElementById('product-grid');
+                // Handle both array response and object with products property
+                const products = Array.isArray(data) ? data : (data.products || []);
+                if (productGrid && products && products.length > 0) {
+                    productGrid.innerHTML = products.map(product => {
+                        // --- FIX 3: Card layout updated to "Add to Cart" ---
+                        const productId = product.id || product._id;
+                        return `
+                        <div class="bg-white rounded-lg shadow-md overflow-hidden transform hover:-translate-y-2 transition-all duration-300" data-aos="fade-up">
+                            <div class="relative overflow-hidden group">
+                                <img src="${product.imageUrl || '/images/placeholder.png'}" alt="${product.name}" class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500">
+                                <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="text-xl font-semibold mb-2">${product.name}</h3>
+                                <p class="text-text-secondary text-sm mb-4">${product.description ? product.description.substring(0, 100) : ''}...</p>
+                                <div class="flex flex-wrap items-center gap-2 justify-between">
+                                    <div class="flex flex-wrap items-center gap-2">
+                                        <span class="text-2xl font-bold text-accent-brown">₹${Number(product.price).toFixed(2)}</span>
+                                        ${product.mrp && product.mrp > 0 && product.discount > 0 && product.mrp !== product.price ? `<span class="text-lg text-gray-500 line-through">₹${Number(product.mrp).toFixed(2)}</span>` : ''}
+                                        ${product.discount > 0 ? `<span class="text-sm font-semibold text-green-600 bg-green-100 px-2 py-1 rounded">(${product.discount}% off)</span>` : ''}
+                                    </div>
+                                    <button onclick="addToCart('${productId}')" class="bg-gradient-to-r from-[#8C6A5D] to-[#73564B] text-white px-4 py-2 rounded-md hover:from-[#73564B] hover:to-[#8C6A5D] transition-colors">Add to Cart</button>
+                                </div>
+                            </div>
+                        </div>
+                    `}).join('');
+                }
+            } catch (error) {
+                console.error('Error loading featured products:', error);
+                // --- FIX 1 (continued): Reset flag on error so fallback can try again ---
+                hasLoadedFeaturedProducts = false;
+            }
+        }
+
+        // Initialize slider
+        function initSlider() {
+            const slides = document.querySelectorAll('.slider-slide');
+            const dots = document.querySelectorAll('.slider-dot');
+            let currentSlide = 0;
+
+            function showSlide(n) {
+                if (!slides[n] || !dots[n]) return; // Add guard clause
+                slides.forEach(slide => slide.classList.remove('active'));
+                dots.forEach(dot => dot.classList.remove('bg-white'));
+                slides[n].classList.add('active');
+                dots[n].classList.add('bg-white');
+            }
+
+            function nextSlide() {
+                currentSlide = (currentSlide + 1) % slides.length;
+                showSlide(currentSlide);
+            }
+
+            if (slides.length > 0) {
+                setInterval(nextSlide, 5000);
+                dots.forEach((dot, index) => {
+                    dot.addEventListener('click', () => {
+                        currentSlide = index;
+                        showSlide(currentSlide);
+                    });
+                });
+            }
+        }
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', () => {
+            loadFeaturedProducts(); // Primary attempt
+            initSlider();
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        });
+
+        // Fallback: if featured products didn't load
+        // This will now only run if the first attempt failed and reset the flag
+        setTimeout(() => {
+            try {
+                if (typeof loadFeaturedProducts === 'function') loadFeaturedProducts();
+            } catch (err) {
+                console.warn('Fallback loadFeaturedProducts failed:', err);
+            }
+        }, 300);
+    </script>
+</body>
+</html>

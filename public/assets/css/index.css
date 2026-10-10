@@ -1,0 +1,219 @@
+/* public/assets/css/index.css - CLEANED VERSION */
+:root {
+    --bg-light: #F9F7F3;
+    --bg-card: #FFFFFF;
+    --text-primary: #2C2C2C;
+    --text-secondary: #6B6B6B;
+    --accent-brown: #8C6A5D;
+    --accent-brown-darker: #73564B;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+}
+
+.logo-text {
+    font-family: 'Cormorant Garamond', serif;
+    color: var(--accent-brown);
+}
+
+/* Image logo helper to keep sizing consistent where we replaced text logos */
+.logo-image {
+    display: inline-block;
+    height: auto;
+    max-height: 3rem;
+}
+
+/* Prevent off-screen auth panels from intercepting clicks - they should only accept pointer events when active (translate-x-0) */
+#login-panel, #signup-panel, #forgot-panel {
+    pointer-events: none;
+}
+#login-panel.translate-x-0, #signup-panel.translate-x-0, #forgot-panel.translate-x-0 {
+    pointer-events: auto;
+}
+
+.font-serif {
+    font-family: 'Cormorant Garamond', serif;
+}
+
+.dropdown:hover .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    transition-delay: 0s;
+}
+
+.dropdown-menu {
+    display: block;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+    transition-delay: 0.1s;
+}
+
+/* Keep dropdown visible when hovering over it */
+.dropdown-menu:hover {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    transition-delay: 0s;
+}
+
+/* Add a wrapper to extend the hover area */
+.dropdown {
+    position: relative;
+    padding-bottom: 20px;
+    margin-bottom: -10px;
+}
+
+/* Specific positioning for account dropdown */
+#header-icons-group {
+    position: relative;
+}
+
+#account-dropdown {
+    position: absolute;
+    top: 100%;
+    /* Calculate the right position based on the container */
+    right: calc(100% - 200px); /* Adjusted to align with account icon */
+    margin-top: 8px;
+    z-index: 50;
+}
+
+.header-scrolled {
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+.marquee-container {
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    -webkit-mask-image: linear-gradient(to right, transparent, white 20%, white 80%, transparent);
+    mask-image: linear-gradient(to right, transparent, white 20%, white 80%, transparent);
+}
+
+.marquee {
+    display: flex;
+    animation: marquee 30s linear infinite;
+}
+
+.marquee img {
+    flex-shrink: 0;
+    width: 150px;
+    margin: 0 40px;
+    transition: filter 0.3s ease;
+}
+
+@keyframes marquee {
+    from { transform: translateX(0%); }
+    to { transform: translateX(-50%); }
+}
+
+.slider-slide {
+    transition: opacity 1.5s ease-in-out;
+}
+
+.slider-slide.active .slider-image {
+    animation: kenburns-effect 7s ease forwards;
+}
+
+@keyframes kenburns-effect {
+    from { transform: scale(1); }
+    to { transform: scale(1.1); }
+}
+
+.pulse-animation {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+    }
+    70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 15px rgba(34, 197, 94, 0);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+    }
+}
+
+.shake {
+    animation: shake 0.6s cubic-bezier(.36, .07, .19, .97) both;
+}
+
+@keyframes shake {
+    10%, 90% { transform: translate3d(-1px, 0, 0); }
+    20%, 80% { transform: translate3d(2px, 0, 0); }
+    30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+    40%, 60% { transform: translate3d(4px, 0, 0); }
+}
+
+
+
+/* === Custom Styles for noUiSlider === */
+
+/* Slider ki main line */
+#price-slider .noUi-connect {
+    background: var(--accent-brown); /* Aapka theme color */
+}
+
+/* Slider ke handle (dots) */
+#price-slider .noUi-handle {
+    border: 2px solid var(--accent-brown);
+    border-radius: 50%;
+    box-shadow: none;
+    background: #fff;
+    cursor: pointer;
+}
+
+/* Slider par focus karne par outline hatana */
+#price-slider .noUi-handle:focus {
+    outline: none;
+}
+
+/* Slider ke handle ka size */
+#price-slider .noUi-handle::before,
+#price-slider .noUi-handle::after {
+    display: none; /* Default bars ko hatana */
+}
+
+#price-slider .noUi-target {
+    border: none;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+    background: #e5e7eb; /* Light gray track */
+}
+#category-filters-container div {
+  display: flex;
+  align-items: flex-start; /* Aligns items to the top */
+}
+
+#category-filters-container input[type="checkbox"] {
+  margin-top: 4px; /* Adjust as needed to vertically center with the first line of text */
+  flex-shrink: 0; /* Prevents the checkbox from shrinking */
+}
+
+/* === Styles for Mobile Filter Sidebar === */
+
+#filters-sidebar.is-open {
+  transform: translateX(0);
+}
+.pulse-animation {
+  z-index: 50; /* Ensures it's on top of the mobile filter bar (z-40) */
+  bottom: 65px !important; /* Moves the button 75px up from the bottom */
+
+}
+
+.drift-zoom-pane.drift-open {
+    position: absolute;
+    left: 110%; /* This line controls the horizontal position */
+    top: 0;
+    width: 100%;
+    height: 500px;
+    z-index: 100;
+    /* ... other styles */
+}

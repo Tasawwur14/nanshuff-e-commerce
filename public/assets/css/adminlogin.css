@@ -1,0 +1,93 @@
+/* Reset and base styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f8f7f5; /* bg-bg-light equivalent */
+    color: #333333; /* text-text-primary equivalent */
+}
+
+.text-accent-brown {
+    color: #8C6A5D; /* accent brown */
+}
+
+.bg-accent-brown {
+    background-color: #8C6A5D;
+}
+
+.bg-accent-brown-darker {
+    background-color: #73564B;
+}
+
+.error-message {
+    color: #e74c3c;
+}
+
+.logo-text {
+    font-family: 'Cormorant Garamond', serif;
+    color: #8C6A5D;
+}
+
+/* Ensure the brand image in admin login keeps a reasonable size */
+.logo-image {
+    display: inline-block;
+    max-height: 3rem;
+}
+
+.login-container {
+    background-color: white;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    border: 1px solid #e5e7eb;
+}
+
+.login-btn {
+    background: linear-gradient(to right, #8C6A5D, #73564B);
+    transition: all 0.3s ease;
+    font-weight: bold;
+}
+
+.login-btn:hover {
+    background: linear-gradient(to right, #73564B, #8C6A5D);
+    transform: translateY(-2px);
+}
+
+.input-field {
+    background-color: #f8f7f5; /* bg-bg-light equivalent */
+    border: 1px solid #e0dacf; /* similar to your site's borders */
+    color: #333333; /* text-text-primary */
+    transition: all 0.3s ease;
+}
+
+.input-field:focus {
+    border-color: #8C6A5D; /* accent brown */
+    box-shadow: 0 0 0 3px rgba(140, 106, 93, 0.1);
+    outline: none;
+}
+
+.shake {
+    animation: shake 0.6s ease-in-out;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-4px); }
+    40%, 80% { transform: translateX(4px); }
+}
+
+a {
+    color: #8C6A5D; /* accent brown */
+}
+
+a:hover {
+    color: #73564B; /* darker accent brown */
+}
+
+/* Additional styling for form elements */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #6b7280; /* text-text-secondary */
+}

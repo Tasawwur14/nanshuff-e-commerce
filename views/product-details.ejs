@@ -1,0 +1,91 @@
+<%- include('partials/header') -%>
+
+<section class="pt-40 pb-16 bg-white">
+    <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+            
+           <div id="product-gallery" class="relative">
+                <div class="main-image-container relative rounded-lg overflow-hidden shadow-lg mb-4">
+                    <img id="main-product-image" 
+                         src="https://placehold.co/600x600/f0f0f0/ccc?text=Loading..." 
+                         data-zoom="https://placehold.co/1200x1200/f0f0f0/ccc?text=Loading..."
+                         alt="Main product view" 
+                         class="w-full h-full object-cover">
+                    </div>
+                <div id="thumbnail-container" class="grid grid-cols-5 gap-2">
+                    </div>
+            </div>
+
+            <div>
+                <h1 id="product-name" class="text-3xl lg:text-4xl font-serif font-bold text-text-primary mb-2">Loading Product...</h1>
+                
+                <div id="product-price" class="text-3xl font-semibold text-accent-brown mb-4">₹0</div>
+                
+                <p id="product-short-desc" class="text-text-secondary mb-6">A short, enticing description of the product goes here.</p>
+
+                <div class="text-sm text-text-secondary space-y-2 mb-6">
+                    <p><strong>Availability:</strong> <span id="product-availability" class="text-green-600 font-semibold">In Stock</span></p>
+                    <p><strong>Category:</strong> <a href="#" id="product-category" class="text-accent-brown hover:underline">Loading...</a></p>
+                    <p><strong>Weight:</strong> <span id="product-weight">500g</span></p>
+                </div>
+
+                <div class="space-y-6">
+                <div class="quantity-selector flex items-center border rounded-lg max-w-[150px]">
+                    <button id="qty-minus" class="w-1/3 px-4 py-2 text-xl font-bold text-gray-500 hover:bg-gray-100 rounded-l-lg">-</button>
+                    <span id="qty-value" class="w-1/3 text-center text-lg font-semibold">1</span>
+                    <button id="qty-plus" class="w-1/3 px-4 py-2 text-xl font-bold text-gray-500 hover:bg-gray-100 rounded-r-lg">+</button>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <button id="add-to-cart-btn" class="w-full font-bold py-3 px-6 rounded-md bg-gradient-to-r from-[#8C6A5D] to-[#73564B] text-white hover:from-[#73564B] hover:to-[#8C6A5D] transition-colors duration-300">
+                        Add to Cart
+                    </button>
+                    <button id="buy-now-btn" class="w-full font-bold py-3 px-6 rounded-md bg-gradient-to-r from-[#8C6A5D] to-[#73564B] text-white hover:from-[#73564B] hover:to-[#8C6A5D] transition-colors duration-300">
+                        Buy Now
+                    </button>
+                </div>
+            </div>
+
+        <div class="mt-16 border-t pt-8">
+            <div class="flex border-b mb-6">
+                <button data-tab="description" class="tab-btn py-2 px-4 font-semibold border-b-2 border-accent-brown text-accent-brown">Description</button>
+                <button data-tab="ingredients" class="tab-btn py-2 px-4 font-semibold text-gray-500">Ingredients</button>
+                <button data-tab="cooking" class="tab-btn py-2 px-4 font-semibold text-gray-500">Cooking Instructions</button>
+            </div>
+            <div class="tab-content text-text-secondary">
+                <div id="description-content">
+                    <p>Full detailed description of the product...</p>
+                </div>
+                <div id="ingredients-content" class="hidden">
+                    <p>List of all ingredients...</p>
+                </div>
+                <div id="cooking-content" class="hidden">
+                    <p>Step-by-step cooking instructions...</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<section id="related-products-section" class="py-16 bg-bg-light">
+    <div class="container mx-auto px-4">
+        <h2 class="text-2xl font-serif text-center mb-6">You Might Also Like</h2>
+        <div class="related-products-container relative">
+            <button id="prev-related-products" class="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 p-3 rounded-full bg-white shadow-lg hover:bg-gray-100 border border-gray-200">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-700" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+                </svg>
+            </button>
+            <div id="related-products-carousel" class="flex overflow-x-hidden space-x-6 pb-4 px-12">
+                </div>
+            <button id="next-related-products" class="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 p-3 rounded-full bg-white shadow-lg hover:bg-gray-100 border border-gray-200">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-700" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                </svg>
+            </button>
+        </div>
+    </div>
+</section>
+<%- include('partials/footer') -%>
+<script src='/assets/js/router.js'></script>
