@@ -24,6 +24,7 @@ const { chromium } = require('playwright');
   console.log('Login completed');
 
   console.log('Step 3: Add a product to the cart');
+  console.log('step 3')
   // Navigate to products page first
   await page.goto('http://localhost:3000/products');
   
