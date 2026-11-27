@@ -123,6 +123,7 @@ const categoryRoutes = require('./routes/categoryRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
 const wishlistRoutes = require('./routes/wishlistRoutes');
 const emailRoutes = require('./routes/emailRoutes');
+const contactRoutes = require('./routes/contactRoutes');
 
 // Import payment controller for cleanup function
 const paymentController = require('./controllers/paymentController');
@@ -293,6 +294,17 @@ app.use('/api/auth/signup', authLimiter);
 app.use('/api/auth/admin/login', authLimiter);
 app.use('/api/auth/forgot-password', authLimiter);
 
+// Contact form: strict per-IP limit to stop spam (5 messages / 15 min)
+const contactLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 5,
+    keyGenerator: (req) => `contact:${req.ip}`,
+    standardHeaders: true,
+    legacyHeaders: false,
+    handler: (req, res) => res.status(429).json({ message: 'Too many messages sent. Please try again later.' })
+});
+app.use('/api/contact', contactLimiter);
+
 // Apply public browsing limiter to read-only endpoints (very permissive)
 app.use('/api/products', publicBrowsingLimiter);
 app.use('/api/categories', publicBrowsingLimiter);
@@ -329,6 +341,7 @@ app.use('/api/payment', paymentRoutes);
 app.use('/api/users', wishlistRoutes);
 app.use('/api', wishlistRoutes);
 app.use('/api/email', emailRoutes);
+app.use('/api/contact', contactRoutes);
 
 // Development routes (only in development mode)
 if (process.env.NODE_ENV === 'development') {
